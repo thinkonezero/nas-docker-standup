@@ -41,7 +41,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './organizr:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -99,8 +99,8 @@ services:
 
         volumes:
             - '/media/Media/Torrents:/data'
-            - './delugevpn/config:/config'
-            - './ovpn/${VPNPROVIDER}:/config/openvpn'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -135,7 +135,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './sonarr:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
             - '/media/Media/Torrents/Completed:/data/Completed'
             - '/media/Media/Media/TVShows:/tv'
             - '/media/Media/Media/Kid TV:/kidtv'
@@ -173,7 +173,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './radarr:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
             - '/media/Media/Torrents/Completed:/data/Completed'
             - '/media/Media/Media/Movies:/movies'
             - '/media/Media/Media/Kid Movies:/kidmovies'
@@ -211,7 +211,7 @@ services:
                 - PUID=${PUID}
                 - PGID=${PGID}
             volumes:
-                - './radarr:/config'
+                - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
                 - '/media/Media/Torrents/Completed:/data/Completed'
                 - '/media/Media/Media/Movies:/movies4k'
                 - '/etc/localtime:/etc/localtime:ro'
@@ -248,7 +248,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './jackett:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
             - '/media/Media/Torrents/Completed:/downloads'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
@@ -268,7 +268,7 @@ services:
     # ----------------------------------------
     plexpy:
         image: linuxserver/tautulli
-        container_name: plexpy
+        container_name: tautulli
         restart: unless-stopped
         logging:
             driver: 'json-file'
@@ -284,7 +284,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './plexpy:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
             - './plex/Library/Application Support/Plex Media Server/Logs:/logs:ro'
             - '/etc/localtime:/etc/localtime:ro'
         depends_on:
@@ -322,7 +322,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './ombi:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/ombi:/config'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -357,7 +357,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './portainer:/data'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/portainer:/data'
             - '/var/run/docker.sock:/var/run/docker.sock'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
@@ -427,7 +427,7 @@ services:
             - PGID=${PGID}
             - INFLUXDB_DB=speedtest; CREATE DATABASE varken;
         volumes:
-            - './influxdb:/var/lib/influxdb'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/influxdb:/var/lib/influxdb'
         labels:
             - 'traefik.enable=false'
 
@@ -454,7 +454,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './chronograf:/var/lib/chronograf'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/chronograf:/var/lib/chronograf'
         command:
             - chronograf
             - --influxdb-url=http://influxdb:8086
@@ -521,8 +521,8 @@ services:
             - PGID=${PGID}
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
-            - './traefik:/etc/traefik/acme'
-            - './traefik/traefik.toml:/traefik.toml'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik:/etc/traefik/acme'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik/traefik.toml:/traefik.toml'
         command:
             - --docker
             - --api
