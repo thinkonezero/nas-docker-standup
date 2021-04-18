@@ -385,7 +385,7 @@ services:
             - TZ=${TZ}
             - PUID=${PUID}
             - PGID=${PGID}
-            - INFLUXDB_DB=speedtest; CREATE DATABASE varken;
+            - INFLUXDB_DB=speedtest;
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/influxdb:/var/lib/influxdb'
         labels:
