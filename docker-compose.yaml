@@ -247,7 +247,7 @@ services:
     # TAUTULLI
     # Monitoring Service for PLEX Usage
     # ----------------------------------------
-    plexpy:
+    tautulli:
         image: linuxserver/tautulli
         container_name: tautulli
         restart: unless-stopped
@@ -266,10 +266,8 @@ services:
             - PGID=${PGID}
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
-            - './plex/Library/Application Support/Plex Media Server/Logs:/logs:ro'
+            - '${SYNOLOGY_PLEX_PATH}/Library/Application Support/Plex Media Server/Logs:/logs:ro'
             - '/etc/localtime:/etc/localtime:ro'
-        depends_on:
-            - plex
         labels:
             - 'traefik.enable=true'
             - 'traefik.docker.network=${STACK_NAME}_web'
