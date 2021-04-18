@@ -42,7 +42,16 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 1. Add the SynoCommunity package source via [easy install](https://synocommunity.com/#easy-install)
 1. Install Git package from SynoCommunity
 1. Enable SSH Access
-1. Upgrade Docker using [synology-docker](https://github.com/markdumay/synology-docker)
+1. ~~Upgrade Docker using [synology-docker](https://github.com/markdumay/synology-docker)~~ Known Issue: https://github.com/markdumay/synology-docker/issues/22
+1. Create Docker Group and Add User
+
+```
+- create the group "docker" from the ui or cli (sudo synogroup --add docker)
+- make it the group of the docker.sock: sudo chown root:docker /var/run/docker.sock
+- assign the user to the docker group in the ui or cli (sudo synogroup --member docker {username})
+- login into ssh as {username} and try (if you were already logged in before you created the group, logout and relogin)
+```
+
 1. Clone Repo `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
 1. Copy Sample Environement File `cp sample.env .env`
 1. Edit `.env` to match your environment
