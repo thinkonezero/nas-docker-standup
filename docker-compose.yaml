@@ -19,13 +19,13 @@ version: '3'
 
 services:
 
-    # ----------------------------------------
-    # ORGANIZR
+# ----------------------------------------
+    # MUXIMUX
     # Web Frontend for Management
     # ----------------------------------------
-    organizr:
-        image: organizr/organizr
-        container_name: organizr
+    muximux:
+        image: linuxserver/muximux
+        container_name: muximux
         restart: unless-stopped
         logging:
             driver: 'json-file'
@@ -41,7 +41,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/muximux:/config'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -49,8 +49,6 @@ services:
             - 'traefik.port=80'
             - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-
-    
 
     # ----------------------------------------
     # DELUGEVPN
@@ -93,7 +91,6 @@ services:
             - LAN_NETWORK=${CIDR_ADDRESS}
             - NAME_SERVERS=37.235.1.174,8.8.8.8,37.235.1.177,8.8.4.4
             - DEBUG=false
-
         volumes:
             - '${TORRENTS_PATH}:/data'
             - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
@@ -105,7 +102,6 @@ services:
             - 'traefik.port=8112'
             - 'traefik.frontend.rule=Host:deluge.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-
 
     # ----------------------------------------
     # SONARR
@@ -141,7 +137,6 @@ services:
             - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
-
     # ----------------------------------------
     # RADARR
     # Movie Management
@@ -175,7 +170,6 @@ services:
             - 'traefik.port=7878'
             - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-
 
     # ----------------------------------------
     # RADARR 4K
@@ -242,7 +236,6 @@ services:
             - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
-
     # ----------------------------------------
     # TAUTULLI
     # Monitoring Service for PLEX Usage
@@ -275,7 +268,6 @@ services:
             - 'traefik.frontend.rule=Host:plexpy.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
-
     # ----------------------------------------
     # OMBI
     # Request Service for Plex Content
@@ -306,7 +298,6 @@ services:
             - 'traefik.port=3579'
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-
 
     # ----------------------------------------
     # PORTAINER
@@ -339,7 +330,6 @@ services:
             - 'traefik.port=9000'
             - 'traefik.frontend.rule=Host:portainer.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-
 
     # ----------------------------------------
     # WATCHTOWER
@@ -437,7 +427,6 @@ services:
             - 'traefik.frontend.rule=Host:chronograf.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
-
     # ----------------------------------------
     # Speedtest
     # Speedtest-CLI and Post to InfluxDB
@@ -513,7 +502,6 @@ services:
             - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
             - 'traefik.frontend.auth.basic=${TRAEFIK_AUTH}'
-
         extra_hosts:
             - host.docker.internal:172.17.0.1
 
