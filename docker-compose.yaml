@@ -181,7 +181,7 @@ services:
     # RADARR 4K
     # Movie Management
     # ----------------------------------------
-        radarr:
+        radarr4k:
             image: linuxserver/radarr
             container_name: radarr4k
             restart: unless-stopped
