@@ -424,30 +424,6 @@ services:
             - 'traefik.enable=false'
 
     # ----------------------------------------
-    # HOME-ASSISTANT
-    # Home Automation Hub
-    # ----------------------------------------
-    homeassistant:
-        image: homeassistant/home-assistant:stable
-        container_name: home-assistant
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '5'
-                max-size: '10m'
-        network_mode: host
-        expose:
-            - 8123
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - './home-assistant:/config'
-            - '/etc/localtime:/etc/localtime:ro'
-
-    # ----------------------------------------
     # TRAEFIK
     # Reverse Proxy + SSL Support
     # ----------------------------------------
