@@ -1,7 +1,7 @@
 ##
-## -------------------------
-## | H T P C - D O C K E R |
-## -------------------------
+## -----------------------
+## | N A S - D O C K E R |
+## -----------------------
 ##
 ## Container based media tools configuration
 ##
@@ -20,6 +20,39 @@ version: '3'
 services:
 
     # ----------------------------------------
+    # ORGANIZR
+    # Web Frontend for Management
+    # ----------------------------------------
+    muximux:
+        image: organizr/organizr
+        container_name: organizr
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 80
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
+            - 'traefik.frontend.entryPoints=https'
+
+    
+
+    # ----------------------------------------
     # DELUGEVPN
     # Deluge Torrent Client + VPN
     # ----------------------------------------
@@ -30,8 +63,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         ports:
@@ -62,9 +95,9 @@ services:
             - DEBUG=false
 
         volumes:
-            - '/media/Media/Torrents:/data'
-            - './delugevpn/config:/config'
-            - './ovpn/${VPNPROVIDER}:/config/openvpn'
+            - '${TORRENTS_PATH}:/data'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -72,10 +105,7 @@ services:
             - 'traefik.port=8112'
             - 'traefik.frontend.rule=Host:deluge.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # SONARR
@@ -88,8 +118,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -99,10 +129,10 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './sonarr:/config'
-            - '/media/Media/Torrents/Completed:/data/Completed'
-            - '/media/Media/Media/TVShows:/tv'
-            - '/media/Media/Media/Kid TV:/kidtv'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
+            - '${MEDIA_BASE_PATH}/TVShows:/tv'
+            - '${MEDIA_BASE_PATH}/Kid TV:/kidtv'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -110,10 +140,7 @@ services:
             - 'traefik.port=8989'
             - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # RADARR
@@ -126,8 +153,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -137,10 +164,10 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './radarr:/config'
-            - '/media/Media/Torrents/Completed:/data/Completed'
-            - '/media/Media/Media/Movies:/movies'
-            - '/media/Media/Media/Kid Movies:/kidmovies'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
+            - '${MEDIA_BASE_PATH}/Movies:/movies'
+            - '${MEDIA_BASE_PATH}/Kid Movies:/kidmovies'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -148,10 +175,44 @@ services:
             - 'traefik.port=7878'
             - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
+
+    # ----------------------------------------
+    # RADARR 4K
+    # Movie Management
+    # ----------------------------------------
+        radarr:
+            image: linuxserver/radarr
+            container_name: radarr4k
+            restart: unless-stopped
+            logging:
+                driver: 'json-file'
+                options:
+                    max-file: '${LOG_FILE_NUM}'
+                    max-size: '${LOG_FILE_SIZE}'
+            networks:
+                - web
+            expose:
+                - 7878
+            environment:
+                - TZ=${TZ}
+                - PUID=${PUID}
+                - PGID=${PGID}
+            volumes:
+                - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
+                - '${TORRENTS_PATH}/Completed:/data/Completed'
+                - '${MEDIA_BASE_PATH}/Movies:/movies4k'
+                - '/etc/localtime:/etc/localtime:ro'
+            labels:
+                - 'traefik.enable=true'
+                - 'traefik.docker.network=${STACK_NAME}_web'
+                - 'traefik.port=7878'
+                - 'traefik.frontend.rule=Host:radarr4k.${DOMAIN}'
+                - 'traefik.frontend.entryPoints=https'
+                - 'traefik.frontend.headers.forceSTSHeader=true'
+                - 'traefik.frontend.headers.STSSeconds=315360000'
+                - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+                - 'traefik.frontend.headers.STSPreload=true'
 
     # ----------------------------------------
     # JACKETT
@@ -164,8 +225,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -175,8 +236,8 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './jackett:/config'
-            - '/media/Media/Torrents/Completed:/downloads'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
+            - '${TORRENTS_PATH}/Completed:/downloads'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -184,10 +245,7 @@ services:
             - 'traefik.port=9117'
             - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # TAUTULLI
@@ -195,13 +253,13 @@ services:
     # ----------------------------------------
     plexpy:
         image: linuxserver/tautulli
-        container_name: plexpy
+        container_name: tautulli
         restart: unless-stopped
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -211,7 +269,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './plexpy:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
             - './plex/Library/Application Support/Plex Media Server/Logs:/logs:ro'
             - '/etc/localtime:/etc/localtime:ro'
         depends_on:
@@ -222,10 +280,7 @@ services:
             - 'traefik.port=8181'
             - 'traefik.frontend.rule=Host:plexpy.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # OMBI
@@ -238,8 +293,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -249,7 +304,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './ombi:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/ombi:/config'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -257,10 +312,7 @@ services:
             - 'traefik.port=3579'
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # PORTAINER
@@ -273,8 +325,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -284,7 +336,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './portainer:/data'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/portainer:/data'
             - '/var/run/docker.sock:/var/run/docker.sock'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
@@ -293,10 +345,7 @@ services:
             - 'traefik.port=9000'
             - 'traefik.frontend.rule=Host:portainer.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # WATCHTOWER
@@ -309,8 +358,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         environment:
@@ -342,8 +391,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         expose:
@@ -354,7 +403,7 @@ services:
             - PGID=${PGID}
             - INFLUXDB_DB=speedtest; CREATE DATABASE varken;
         volumes:
-            - './influxdb:/var/lib/influxdb'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/influxdb:/var/lib/influxdb'
         labels:
             - 'traefik.enable=false'
 
@@ -369,8 +418,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
             - internal
@@ -381,7 +430,7 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - './chronograf:/var/lib/chronograf'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/chronograf:/var/lib/chronograf'
         command:
             - chronograf
             - --influxdb-url=http://influxdb:8086
@@ -393,10 +442,7 @@ services:
             - 'traefik.port=8888'
             - 'traefik.frontend.rule=Host:chronograf.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # Speedtest
@@ -409,8 +455,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         environment:
@@ -434,8 +480,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         ports:
@@ -448,8 +494,8 @@ services:
             - PGID=${PGID}
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
-            - './traefik:/etc/traefik/acme'
-            - './traefik/traefik.toml:/traefik.toml'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik:/etc/traefik/acme'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik/traefik.toml:/traefik.toml'
         command:
             - --docker
             - --api
@@ -473,10 +519,7 @@ services:
             - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
             - 'traefik.frontend.auth.basic=${TRAEFIK_AUTH}'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
         extra_hosts:
             - host.docker.internal:172.17.0.1
 
