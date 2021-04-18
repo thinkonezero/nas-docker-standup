@@ -49,10 +49,7 @@ services:
             - 'traefik.port=80'
             - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
     
 
     # ----------------------------------------
@@ -108,10 +105,7 @@ services:
             - 'traefik.port=8112'
             - 'traefik.frontend.rule=Host:deluge.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # SONARR
@@ -146,10 +140,7 @@ services:
             - 'traefik.port=8989'
             - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # RADARR
@@ -184,10 +175,7 @@ services:
             - 'traefik.port=7878'
             - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # RADARR 4K
@@ -257,10 +245,7 @@ services:
             - 'traefik.port=9117'
             - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # TAUTULLI
@@ -295,10 +280,7 @@ services:
             - 'traefik.port=8181'
             - 'traefik.frontend.rule=Host:plexpy.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # OMBI
@@ -330,10 +312,7 @@ services:
             - 'traefik.port=3579'
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # PORTAINER
@@ -366,10 +345,7 @@ services:
             - 'traefik.port=9000'
             - 'traefik.frontend.rule=Host:portainer.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # WATCHTOWER
@@ -466,10 +442,7 @@ services:
             - 'traefik.port=8888'
             - 'traefik.frontend.rule=Host:chronograf.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
 
     # ----------------------------------------
     # Speedtest
@@ -546,10 +519,7 @@ services:
             - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
             - 'traefik.frontend.auth.basic=${TRAEFIK_AUTH}'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
+
         extra_hosts:
             - host.docker.internal:172.17.0.1
 
