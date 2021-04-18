@@ -95,7 +95,7 @@ services:
             - DEBUG=false
 
         volumes:
-            - '/media/Media/Torrents:/data'
+            - '${TORRENTS_PATH}:/data'
             - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
             - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
             - '/etc/localtime:/etc/localtime:ro'
@@ -130,7 +130,7 @@ services:
             - PGID=${PGID}
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
-            - '/media/Media/Torrents/Completed:/data/Completed'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
             - '/media/Media/Media/TVShows:/tv'
             - '/media/Media/Media/Kid TV:/kidtv'
             - '/etc/localtime:/etc/localtime:ro'
@@ -165,7 +165,7 @@ services:
             - PGID=${PGID}
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
-            - '/media/Media/Torrents/Completed:/data/Completed'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
             - '/media/Media/Media/Movies:/movies'
             - '/media/Media/Media/Kid Movies:/kidmovies'
             - '/etc/localtime:/etc/localtime:ro'
@@ -200,7 +200,7 @@ services:
                 - PGID=${PGID}
             volumes:
                 - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
-                - '/media/Media/Torrents/Completed:/data/Completed'
+                - '${TORRENTS_PATH}/Completed:/data/Completed'
                 - '/media/Media/Media/Movies:/movies4k'
                 - '/etc/localtime:/etc/localtime:ro'
             labels:
@@ -237,7 +237,7 @@ services:
             - PGID=${PGID}
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
-            - '/media/Media/Torrents/Completed:/downloads'
+            - '${TORRENTS_PATH}/Completed:/downloads'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
