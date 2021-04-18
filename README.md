@@ -1,13 +1,10 @@
-# HTPC Docker Standup
-
-*PSA*: Project has moved to [GitLab](https://gitlab.com/phikai/htpc-docker-standup). This repo will remain on Github as a mirror.
+# NAS Docker Standup
 
 ---
-This is a simple docker-compose configuration to standup a new HTPC. It's based on running on an Ubuntu server, but could easily be adapted for other opertaing systems with Docker support.
+This is a simple docker-compose configuration to standup a Synology NAS.
 
-It includes the following Services
+## Services
 
-- [Plex Media Server](https://www.plex.tv/) - for managing media and serving files to Plex Clients
 - [Deluge](https://deluge-torrent.org/) + [Private Internet Access](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) - for downloading torrents... "safely"
 - [Sonarr](https://sonarr.tv/) - for TV Series Management
 - [Radarr](https://radarr.video/) - for Movie Management
@@ -16,14 +13,10 @@ It includes the following Services
 - [Ombi](https://ombi.io/) - for requesting additional library content
 - [Portainer](https://portainer.io/) - for managing all of your Docker containers
 - [Watchtower](https://github.com/v2tec/watchtower) - for automatically updating running containers
-- [NetData](https://my-netdata.io/) - for system resource monitoring
-- [Muximux](https://github.com/mescon/Muximux) - for simple web based management
-- [Duplicati](https://www.duplicati.com/) - for backing up data to your favorite provider
+- [Organizr](https://github.com/causefx/Organizr) - for web based portal to access services
 - [InfluxDB](https://www.influxdata.com/) - for time series based database storage
 - [Chronograf](https://www.influxdata.com/time-series-platform/chronograf/) - for making pretty dashboards out of the database data
 - [SpeedTest](https://github.com/sivel/speedtest-cli/) - for performing a speedtest and posting data to the database
-- [Varken](https://github.com/Boerderij/Varken) - for aggregating data from the Plex ecosystem into InfluxDB using Grafana for a frontend
-- [Grafana](https://grafana.com/) - for making dashboards out of the Varken Data
 - [Traefik](hhttps://traefik.io/) - Reverse Proxy and SSL Support
 
 This project was heavily inspired by the [MediaBox](https://github.com/tom472/mediabox) project... Many Thanks!
