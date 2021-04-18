@@ -424,33 +424,6 @@ services:
             - 'traefik.enable=false'
 
     # ----------------------------------------
-    # Varken
-    # Standalone Plex Data Aggeregator
-    # ----------------------------------------
-    varken:
-        image: boerderij/varken
-        container_name: varken
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '5'
-                max-size: '10m'
-        networks:
-            - internal
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - './varken:/config'
-            - '/etc/localtime:/etc/localtime:ro'
-        depends_on:
-            - influxdb
-        labels:
-            - 'traefik.enable=false'
-
-    # ----------------------------------------
     # Grafana
     # Frontend for Varken
     # ----------------------------------------
