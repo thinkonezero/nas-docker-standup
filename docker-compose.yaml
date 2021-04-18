@@ -181,34 +181,34 @@ services:
     # RADARR 4K
     # Movie Management
     # ----------------------------------------
-        radarr4k:
-            image: linuxserver/radarr
-            container_name: radarr4k
-            restart: unless-stopped
-            logging:
-                driver: 'json-file'
-                options:
-                    max-file: '${LOG_FILE_NUM}'
-                    max-size: '${LOG_FILE_SIZE}'
-            networks:
-                - web
-            expose:
-                - 7878
-            environment:
-                - TZ=${TZ}
-                - PUID=${PUID}
-                - PGID=${PGID}
-            volumes:
-                - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
-                - '${TORRENTS_PATH}/Completed:/data/Completed'
-                - '${MEDIA_BASE_PATH}/Movies:/movies4k'
-                - '/etc/localtime:/etc/localtime:ro'
-            labels:
-                - 'traefik.enable=true'
-                - 'traefik.docker.network=${STACK_NAME}_web'
-                - 'traefik.port=7878'
-                - 'traefik.frontend.rule=Host:radarr4k.${DOMAIN}'
-                - 'traefik.frontend.entryPoints=https'
+    radarr4k:
+        image: linuxserver/radarr
+        container_name: radarr4k
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 7878
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
+            - '${MEDIA_BASE_PATH}/Movies:/movies4k'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.port=7878'
+            - 'traefik.frontend.rule=Host:radarr4k.${DOMAIN}'
+            - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
     # JACKETT
