@@ -313,7 +313,7 @@ services:
     # Docker Container Management
     # ----------------------------------------
     portainer:
-        image: portainer/portainer:latest
+        image: portainer/portainer-ce
         container_name: portainer
         restart: unless-stopped
         logging:
