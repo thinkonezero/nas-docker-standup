@@ -19,36 +19,36 @@ version: '3'
 
 services:
 
-# ----------------------------------------
-    # MUXIMUX
+    # ----------------------------------------
+    # ORGANIZR
     # Web Frontend for Management
     # ----------------------------------------
-    muximux:
-        image: linuxserver/muximux
-        container_name: muximux
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 80
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/muximux:/config'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=80'
-            - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+        organizr:
+            image: organizr/organizr
+            container_name: organizr
+            restart: unless-stopped
+            logging:
+                driver: 'json-file'
+                options:
+                    max-file: '${LOG_FILE_NUM}'
+                    max-size: '${LOG_FILE_SIZE}'
+            networks:
+                - web
+            expose:
+                - 80
+            environment:
+                - TZ=${TZ}
+                - PUID=${PUID}
+                - PGID=${PGID}
+            volumes:
+                - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
+                - '/etc/localtime:/etc/localtime:ro'
+            labels:
+                - 'traefik.enable=true'
+                - 'traefik.docker.network=${STACK_NAME}_web'
+                - 'traefik.port=80'
+                - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
+                - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
     # DELUGEVPN
