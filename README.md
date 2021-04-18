@@ -28,7 +28,7 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 ## Install Instructions
 
 ### Prerequisites
-- [Ubuntu 16.04 LTS](https://www.ubuntu.com/)
+- Synology NAS
 - VPN Account from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
@@ -36,22 +36,19 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 - [Docker-Compose](https://docs.docker.com/compose/)
 
 ### Server Configuration
-1. [Install Ubuntu Server](https://tutorials.ubuntu.com/tutorial/tutorial-install-ubuntu-server) and get it updated - `sudo apt update` then `sudo apt upgrade`
-2. If you have existing media on a separate NTFS formatted drive:
- - Mount NTFS Drive w/ Appropriate Permissions, [Link 1](https://askubuntu.com/questions/113733/how-do-i-correctly-mount-a-ntfs-partition-in-etc-fstab#comment684545_113746)
- - `sudo blkid` - Find the block ID of your media drive
- - `sudo mkdir /media/Media` - make the mount point
- - Add to `/etc/fstab`: `UUID=BC6617A366175D88 /media/Media ntfs-3g uid=1000,gid=1000,dmask=022,fmask=133 0 0`
-3. [Setup Samba Share](https://help.ubuntu.com/community/How%20to%20Create%20a%20Network%20Share%20Via%20Samba%20Via%20CLI%20%28Command-line%20interface/Linux%20Terminal%29%20-%20Uncomplicated%2C%20Simple%20and%20Brief%20Way%21) (to access media outside of HTPC)
-4. [Install Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository)
- - You'll need to add your user running docker to the `docker` group. See [Post-installation steps for Linux](https://docs.docker.com/install/linux/linux-postinstall/)
-5. [Install Docker Compose](https://docs.docker.com/compose/install/#install-compose)
-6. Clone Repo `git clone https://gitlab.com/phikai/htpc-docker-standup.git`
-7. Copy Sample Environement File `cp sample.env .env`
-8. Edit `.env` to match your environment
-9. Run Docker Environment `docker-compose up -d`
-10. ???
-11. Profit.
+1. Setup Synology NAS and [install DSM](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_install_DSM)
+1. Install [Docker](https://www.synology.com/en-us/dsm/packages/Docker) via Add-on Packages
+1. Install Plex natively from [Plex.tv](https://www.plex.tv/media-server-downloads/)
+1. Add the SynoCommunity package source via [easy install](https://synocommunity.com/#easy-install)
+1. Install Git package from SynoCommunity
+1. Enable SSH Access
+1. Upgrade Docker using [synology-docker](https://github.com/markdumay/synology-docker)
+1. Clone Repo `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
+1. Copy Sample Environement File `cp sample.env .env`
+1. Edit `.env` to match your environment
+1. Run Docker Environment `docker-compose up -d`
+1. ???
+1. Profit.
 
 ### Environment File
 - `LOCALUSER=` - This is the local user of your linux account and account running docker
@@ -59,14 +56,12 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 - `IP_ADDRESS=` - Local IP Address of the server, should be static
 - `PUID=` - UID of the local user, can be found by executing `id` from the command line
 - `PGID=` - GID of the local user, can be found by executing `id` from the command line
-- `PMSTOKEN=` - The claim token for the server to obtain a real server token. If not provided, server is will not be automatically logged in. If server is already logged in, this parameter is ignored. You can obtain a claim token to login your server to your plex account by visiting [https://www.plex.tv/claim](https://www.plex.tv/claim)
 - `VPNUNAME=` - Your VPN username from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - `VPNPASS=` - Your VPN password from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - `VPNPROVIDER=` - Your VPN provider, name must match a folder specified in `ovpn`. This defaults to `pia` if you copied `sample.env`.
 - `VPN_REMOTE=` - The remote server you want to connect to (must support port forwarding)
 - `CIDR_ADDRESS=` - IP/netmask entries which allow access to the server without requiring authorization. We recommend you set this only if you do not sign in your server. For example `192.168.1.0/24,172.16.0.0/16` will allow access to the entire `192.168.1.x` range and the `172.16.x.x`
 - `TZ=` - Set the timezone inside the container. For example: `Europe/London`. The complete list can be found here: [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-- `PMSTAG=` - Which version of Plex Media Server, available options: `latest`, `plexpass` and `public`. You should use `latest` unless you have special requirements or are a Plex Pass subscriber.
 - `EMAIL=` - Email address to be used for Let's Encrypt SSL certificate validation - `someone@somewhere.com`
 - `DOMAIN=` - Public domain to use for accessing services via a public domain - `server.domain.com`
 - `WATCHTOWER_EMAIL=` - Email address you'd like Watchtower to notify for any notifications - `someone@somewhere.com`
@@ -102,7 +97,6 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 If this project has helped you in anyway, and you'd like to say thanks...
 
 [![Donate](https://img.shields.io/badge/Donate-SquareCash-brightgreen.svg)](https://cash.me/$phikai)
-[![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/15JCkpHhjjVmWYaTBc2fJn4tcKHEd194gY)](https://en.cryptobadges.io/donate/15JCkpHhjjVmWYaTBc2fJn4tcKHEd194gY)
 
 You can also [gift a Plex Pass](https://www.plex.tv/plex-pass/gift/) subscription as a great way to show your appreciation.
 
