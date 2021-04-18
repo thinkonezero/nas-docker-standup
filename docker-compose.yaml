@@ -154,6 +154,43 @@ services:
             - 'traefik.frontend.headers.STSPreload=true'
 
     # ----------------------------------------
+    # RADARR 4K
+    # Movie Management
+    # ----------------------------------------
+        radarr:
+            image: linuxserver/radarr
+            container_name: radarr4k
+            restart: unless-stopped
+            logging:
+                driver: 'json-file'
+                options:
+                    max-file: '${LOG_FILE_NUM}'
+                    max-size: '${LOG_FILE_SIZE}'
+            networks:
+                - web
+            expose:
+                - 7878
+            environment:
+                - TZ=${TZ}
+                - PUID=${PUID}
+                - PGID=${PGID}
+            volumes:
+                - './radarr:/config'
+                - '/media/Media/Torrents/Completed:/data/Completed'
+                - '/media/Media/Media/Movies:/movies4k'
+                - '/etc/localtime:/etc/localtime:ro'
+            labels:
+                - 'traefik.enable=true'
+                - 'traefik.docker.network=${STACK_NAME}_web'
+                - 'traefik.port=7878'
+                - 'traefik.frontend.rule=Host:radarr4k.${DOMAIN}'
+                - 'traefik.frontend.entryPoints=https'
+                - 'traefik.frontend.headers.forceSTSHeader=true'
+                - 'traefik.frontend.headers.STSSeconds=315360000'
+                - 'traefik.frontend.headers.STSIncludeSubdomains=true'
+                - 'traefik.frontend.headers.STSPreload=true'
+
+    # ----------------------------------------
     # JACKETT
     # RSS/TORZNAB Feed Creator
     # ----------------------------------------
