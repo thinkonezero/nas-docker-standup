@@ -131,8 +131,8 @@ services:
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
             - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '/media/Media/Media/TVShows:/tv'
-            - '/media/Media/Media/Kid TV:/kidtv'
+            - '${MEDIA_BASE_PATH}/TVShows:/tv'
+            - '${MEDIA_BASE_PATH}/Kid TV:/kidtv'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -166,8 +166,8 @@ services:
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
             - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '/media/Media/Media/Movies:/movies'
-            - '/media/Media/Media/Kid Movies:/kidmovies'
+            - '${MEDIA_BASE_PATH}/Movies:/movies'
+            - '${MEDIA_BASE_PATH}/Kid Movies:/kidmovies'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -201,7 +201,7 @@ services:
             volumes:
                 - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
                 - '${TORRENTS_PATH}/Completed:/data/Completed'
-                - '/media/Media/Media/Movies:/movies4k'
+                - '${MEDIA_BASE_PATH}/Movies:/movies4k'
                 - '/etc/localtime:/etc/localtime:ro'
             labels:
                 - 'traefik.enable=true'
