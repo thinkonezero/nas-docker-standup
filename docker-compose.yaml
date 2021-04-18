@@ -23,7 +23,7 @@ services:
     # ORGANIZR
     # Web Frontend for Management
     # ----------------------------------------
-    muximux:
+    organizr:
         image: organizr/organizr
         container_name: organizr
         restart: unless-stopped
