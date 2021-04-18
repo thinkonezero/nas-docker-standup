@@ -424,55 +424,6 @@ services:
             - 'traefik.enable=false'
 
     # ----------------------------------------
-    # Grafana
-    # Frontend for Varken
-    # ----------------------------------------
-    grafana:
-        image: grafana/grafana
-        container_name: grafana
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '5'
-                max-size: '10m'
-        networks:
-            - web
-            - internal
-        expose:
-            - 3000
-        user: "0"
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - GF_SERVER_DOMAIN=grafana.${DOMAIN}
-            - GF_SERVER_ROOT_URL=https://grafana.${DOMAIN}
-            - GF_PATHS_DATA=/config/data
-            - GF_PATHS_LOGS=/config/logs
-            - GF_PATHS_PLUGINS=/config/plugins
-            - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
-            - GF_SMTP_ENABLED=true
-            - GF_SMTP_HOST=${SMTP_SERVER}:${SMTP_PORT}
-            - GF_SMTP_USER=${SMTP_USER}
-            - GF_SMTP_PASSWORD=${SMTP_PASS}
-            - GF_SMTP_FROM_ADDRESS=${SMTP_FROM}
-        volumes:
-            - './grafana:/config'
-        depends_on:
-            - influxdb
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=3000'
-            - 'traefik.frontend.rule=Host:grafana.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.headers.forceSTSHeader=true'
-            - 'traefik.frontend.headers.STSSeconds=315360000'
-            - 'traefik.frontend.headers.STSIncludeSubdomains=true'
-            - 'traefik.frontend.headers.STSPreload=true'
-    
-    # ----------------------------------------
     # HOME-ASSISTANT
     # Home Automation Hub
     # ----------------------------------------
