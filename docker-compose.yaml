@@ -265,7 +265,7 @@ services:
             - 'traefik.enable=true'
             - 'traefik.docker.network=${STACK_NAME}_web'
             - 'traefik.port=8181'
-            - 'traefik.frontend.rule=Host:plexpy.${DOMAIN}'
+            - 'traefik.frontend.rule=Host:tautulli.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
