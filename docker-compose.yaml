@@ -30,8 +30,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         ports:
@@ -88,8 +88,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -126,8 +126,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -164,8 +164,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -200,8 +200,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -238,8 +238,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -273,8 +273,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         expose:
@@ -309,8 +309,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         environment:
@@ -342,8 +342,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         expose:
@@ -369,8 +369,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
             - internal
@@ -409,8 +409,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - internal
         environment:
@@ -434,8 +434,8 @@ services:
         logging:
             driver: 'json-file'
             options:
-                max-file: '5'
-                max-size: '10m'
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
         networks:
             - web
         ports:
