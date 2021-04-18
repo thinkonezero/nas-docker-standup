@@ -478,7 +478,6 @@ services:
         volumes:
             - '/var/run/docker.sock:/var/run/docker.sock'
             - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik:/etc/traefik/acme'
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik/traefik.toml:/traefik.toml'
         command:
             - --docker
             - --api
@@ -502,8 +501,6 @@ services:
             - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
             - 'traefik.frontend.auth.basic=${TRAEFIK_AUTH}'
-        extra_hosts:
-            - host.docker.internal:172.17.0.1
 
 ########################
 # GLOBAL CONFIGURATION #
