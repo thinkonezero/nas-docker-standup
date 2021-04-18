@@ -23,32 +23,32 @@ services:
     # ORGANIZR
     # Web Frontend for Management
     # ----------------------------------------
-        organizr:
-            image: organizr/organizr
-            container_name: organizr
-            restart: unless-stopped
-            logging:
-                driver: 'json-file'
-                options:
-                    max-file: '${LOG_FILE_NUM}'
-                    max-size: '${LOG_FILE_SIZE}'
-            networks:
-                - web
-            expose:
-                - 80
-            environment:
-                - TZ=${TZ}
-                - PUID=${PUID}
-                - PGID=${PGID}
-            volumes:
-                - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
-                - '/etc/localtime:/etc/localtime:ro'
-            labels:
-                - 'traefik.enable=true'
-                - 'traefik.docker.network=${STACK_NAME}_web'
-                - 'traefik.port=80'
-                - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
-                - 'traefik.frontend.entryPoints=https'
+    organizr:
+        image: organizr/organizr
+        container_name: organizr
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 80
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.port=80'
+            - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
+            - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
     # DELUGEVPN
