@@ -369,7 +369,7 @@ services:
     # Time Series Database
     # ----------------------------------------
     influxdb:
-        image: influxdb
+        image: influxdb:1.8.4
         container_name: influxdb
         restart: unless-stopped
         logging:
