@@ -52,6 +52,15 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 - login into ssh as {username} and try (if you were already logged in before you created the group, logout and relogin)
 ```
 
+1. Make sure DSM isn't using 80/443 with [guide](https://www.smarthomebeginner.com/synology-docker-media-server/#8_Ensure_Ports_80_and_443_are_Free)
+1. Enable Tunnel stuff for VPN: https://forums.unraid.net/topic/44109-support-binhex-delugevpn/page/58/?tab=comments#comment-542434
+
+```
+sudo insmod /lib/modules/tun.ko
+sudo insmod /lib/modules/iptable_mangle.ko
+```
+Make a scheduled task of those commands
+
 1. Clone Repo `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
 1. Copy Sample Environement File `cp sample.env .env`
 1. Edit `.env` to match your environment
