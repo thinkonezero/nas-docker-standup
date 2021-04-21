@@ -195,7 +195,7 @@ services:
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
             - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/Movies:/movies4k'
+            - '${MEDIA_BASE_PATH}/Movies4k:/movies4k'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
