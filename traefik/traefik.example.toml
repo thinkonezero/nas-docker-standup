@@ -3,7 +3,7 @@
   [backends.backend-synology-dsm]
     [backends.backend-synology-dsm.servers]
       [backends.backend-synology-dsm.servers.server-synology-dsm-ext]
-        url = "http://<LOCAL_SYNOLOGY_IP>:5001"
+        url = "http://<LOCAL_SYNOLOGY_IP>:5000"
         weight = 0
 [frontends]
   [frontends.frontend-synology-dsm]
