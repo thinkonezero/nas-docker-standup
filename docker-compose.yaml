@@ -296,7 +296,7 @@ services:
         labels:
             - 'traefik.enable=true'
             - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=3579'
+            - 'traefik.port=5055'
             - 'traefik.frontend.rule=Host:request.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
