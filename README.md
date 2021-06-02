@@ -10,7 +10,7 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Radarr](https://radarr.video/) - for Movie Management
 - [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
-- [Ombi](https://ombi.io/) - for requesting additional library content
+- [Overseerr](https://overseerr.dev/) - for requesting additional library content
 - [Portainer](https://portainer.io/) - for managing all of your Docker containers
 - [Watchtower](https://github.com/v2tec/watchtower) - for automatically updating running containers
 - [Organizr](https://github.com/causefx/Organizr) - for web based portal to access services
