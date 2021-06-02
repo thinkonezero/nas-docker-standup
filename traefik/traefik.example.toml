@@ -1,15 +1,15 @@
 [file]
 [backends]
-  [backends.backend-homeassistant]
-    [backends.backend-homeassistant.servers]
-      [backends.backend-homeassistant.servers.server-homeassistant-ext]
-        url = "http://<LOCAL_DOCKER_HOST_IP>:8123"
+  [backends.backend-synology-dsm]
+    [backends.backend-synology-dsm.servers]
+      [backends.backend-synology-dsm.servers.server-synology-dsm-ext]
+        url = "http://<LOCAL_SYNOLOGY_IP>:5001"
         weight = 0
 [frontends]
-  [frontends.frontend-homeassistant]
-    backend = "backend-homeassistant"
+  [frontends.frontend-synology-dsm]
+    backend = "backend-synology-dsm"
     passHostHeader = true
     entrypoints = ["https"]
-    [frontends.frontend-homeassistant.routes]
-      [frontends.frontend-homeassistant.routes.route-homeassistant-ext]
-      rule = "Host:home-assistant.<YOUR.DOMAIN>.com"
+    [frontends.frontend-synology-dsm.routes]
+      [frontends.frontend-synology-dsm.routes.route-synology-dsm-ext]
+      rule = "Host:dsm.<YOUR.DOMAIN>.com"
