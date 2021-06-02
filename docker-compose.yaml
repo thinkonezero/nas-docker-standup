@@ -269,12 +269,12 @@ services:
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
-    # OMBI
+    # Overseerr
     # Request Service for Plex Content
     # ----------------------------------------
-    ombi:
-        image: linuxserver/ombi
-        container_name: ombi
+    overseerr:
+        image: sctx/overseerr:latest
+        container_name: overseerr
         restart: unless-stopped
         logging:
             driver: 'json-file'
@@ -284,13 +284,14 @@ services:
         networks:
             - web
         expose:
-            - 3579
+            - 5055
         environment:
             - TZ=${TZ}
             - PUID=${PUID}
             - PGID=${PGID}
+            - LOG_LEVEL=info
         volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/ombi:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/app/config'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
