@@ -91,6 +91,12 @@ Make a scheduled task of those commands
 - `SPEEDTEST_INTERVAL=` - Number of seconds between tests to the [Speedtest.net](http://www.speedtest.net/) services
 - `TRAEFIK_AUTH=` - Basic Auth for the Traefik Admin [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
 - `STACK_NAME=` - This is used to specify the appropriate network Traefik should use. See #13 for details.
+- `LOG_FILE_NUM=` - The number of log files to keep of the specified size before pruning them
+- `LOG_FILE_SIZE=` - The size of the log files before truncating and rotating the log files
+- `MEDIA_BASE_PATH=` - This is the base path of your media directory used to make similar paths easier - `/volume1/media`
+- `SNYOLOGY_BASE_DOCKER_PATH=` - The base path to the docker directory where container data is stored - `/volume1/docker`
+- `SNYOLOGY_PLEX_PATH=` - The path to the installation directory for Plex Media Server - `/volume1/PlexMediaServer`
+- `TORRENTS_PATH=` - The base path for the torrents download/in-progress directories - `/volume1/torrents`
 
 ### Email/SMTP Service
 - [Mailgun](https://documentation.mailgun.com/en/latest/quickstart.html) has an excellent QuickStart Guide
