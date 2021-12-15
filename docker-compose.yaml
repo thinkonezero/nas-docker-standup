@@ -337,7 +337,7 @@ services:
     # Automatic Update Service for Docker VMs
     # ----------------------------------------
     watchtower:
-        image: v2tec/watchtower
+        image: containrrr/watchtower
         container_name: watchtower
         restart: unless-stopped
         logging:
