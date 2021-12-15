@@ -12,7 +12,7 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
 - [Overseerr](https://overseerr.dev/) - for requesting additional library content
 - [Portainer](https://portainer.io/) - for managing all of your Docker containers
-- [Watchtower](https://github.com/v2tec/watchtower) - for automatically updating running containers
+- [Watchtower](https://containrrr.dev/watchtower) - for automatically updating running containers
 - [Organizr](https://github.com/causefx/Organizr) - for web based portal to access services
 - [InfluxDB](https://www.influxdata.com/) - for time series based database storage
 - [Chronograf](https://www.influxdata.com/time-series-platform/chronograf/) - for making pretty dashboards out of the database data
@@ -82,12 +82,13 @@ Make a scheduled task of those commands
 - `TZ=` - Set the timezone inside the container. For example: `Europe/London`. The complete list can be found here: [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 - `EMAIL=` - Email address to be used for Let's Encrypt SSL certificate validation - `someone@somewhere.com`
 - `DOMAIN=` - Public domain to use for accessing services via a public domain - `server.domain.com`
-- `WATCHTOWER_EMAIL=` - Email address you'd like Watchtower to notify for any notifications - `someone@somewhere.com`
-- `SMTP_FROM=` - From address that your SMTP server uses to send email - `someone@somewhere.com`
-- `SMTP_SERVER=` - Servername of your SMTP server - `smtp.domain.com`
-- `SMTP_PORT=` - Port that your SMTP server uses to connect - `587`
-- `SMTP_USER=` - Username that your SMTP server uses to authenticate
-- `SMTP_PASS=` - Password for your SMTP user to authenticate
+- `WATCHTOWER_NOTIFICATIONS=` - Default to `email` for using email notifications
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_TO=` - Email address you'd like Watchtower to notify for any notifications - `someone@somewhere.com`
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_FROM=` - From address that your SMTP server uses to send email - `someone@somewhere.com`
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_SERVER=` - Servername of your SMTP server - `smtp.domain.com`
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_PORT=` - Port that your SMTP server uses to connect - `587`
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_USER=` - Username that your SMTP server uses to authenticate
+- `WATCHTOWER_NOTIFICATIONS_EMAIL_PASSWORD=` - Password for your SMTP user to authenticate
 - `SPEEDTEST_INTERVAL=` - Number of seconds between tests to the [Speedtest.net](http://www.speedtest.net/) services
 - `TRAEFIK_AUTH=` - Basic Auth for the Traefik Admin [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
 - `STACK_NAME=` - This is used to specify the appropriate network Traefik should use. See #13 for details.
