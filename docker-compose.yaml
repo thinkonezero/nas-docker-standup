@@ -205,12 +205,12 @@ services:
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
-    # PROWLARR
+    # JACKETT
     # RSS/TORZNAB Feed Creator
     # ----------------------------------------
-    prowlarr:
-        image: lscr.io/linuxserver/prowlarr:develop
-        container_name: prowlarr
+    jackett:
+        image: linuxserver/jackett
+        container_name: jackett
         restart: unless-stopped
         logging:
             driver: 'json-file'
@@ -226,13 +226,14 @@ services:
             - PUID=${PUID}
             - PGID=${PGID}
         volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/prowlarr:/config'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
+            - '${TORRENTS_PATH}/Completed:/downloads'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
             - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=9696'
-            - 'traefik.frontend.rule=Host:prowlarr.${DOMAIN}'
+            - 'traefik.port=9117'
+            - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
