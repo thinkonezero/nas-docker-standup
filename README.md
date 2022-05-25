@@ -8,7 +8,7 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Deluge](https://deluge-torrent.org/) + [Private Internet Access](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) - for downloading torrents... "safely"
 - [Sonarr](https://sonarr.tv/) - for TV Series Management
 - [Radarr](https://radarr.video/) - for Movie Management
-- [Prowlarr](https://github.com/Prowlarr/Prowlarr) - for adding Torrent indexers
+- [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
 - [Overseerr](https://overseerr.dev/) - for requesting additional library content
 - [Portainer](https://portainer.io/) - for managing all of your Docker containers
