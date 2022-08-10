@@ -301,6 +301,45 @@ services:
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
+    # Unmanic
+    # Library optimizer to save space
+    # ----------------------------------------
+    unmanic:
+        image: josh5/unmanic:latest
+        container_name: unmanic
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 8888
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - LOG_LEVEL=info
+            - LIBVA_DRIVER_NAME=i965
+            - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+            - NVIDIA_VISIBLE_DEVICES=all
+        devices:
+            - /dev/dri:/dev/dri
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/unmanic/config:/config'
+            - '${MEDIA_BASE_PATH}:/library'
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/unmanic/tmp:/tmp/unmanic'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.port=8888'
+            - 'traefik.frontend.rule=Host:unmanic.${DOMAIN}'
+            - 'traefik.frontend.entryPoints=https'
+
+    # ----------------------------------------
     # PORTAINER
     # Docker Container Management
     # ----------------------------------------
