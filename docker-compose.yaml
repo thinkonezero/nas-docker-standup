@@ -338,6 +338,7 @@ services:
             - 'traefik.port=8888'
             - 'traefik.frontend.rule=Host:unmanic.${DOMAIN}'
             - 'traefik.frontend.entryPoints=https'
+            - "traefik.http.middlewares.test-auth.basicauth.usersfile=${SYNOLOGY_BASE_DOCKER_PATH}/traefik/users"
 
     # ----------------------------------------
     # PORTAINER
