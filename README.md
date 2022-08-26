@@ -17,6 +17,7 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [InfluxDB](https://www.influxdata.com/) - for time series based database storage
 - [Chronograf](https://www.influxdata.com/time-series-platform/chronograf/) - for making pretty dashboards out of the database data
 - [SpeedTest](https://github.com/sivel/speedtest-cli/) - for performing a speedtest and posting data to the database
+- [Cloudflared][https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/] - zero trust tunnel setup with Cloudflare to SSH to host
 - [Traefik](hhttps://traefik.io/) - Reverse Proxy and SSL Support
 
 This project was heavily inspired by the [MediaBox](https://github.com/tom472/mediabox) project... Many Thanks!

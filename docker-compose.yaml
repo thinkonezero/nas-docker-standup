@@ -454,6 +454,23 @@ services:
             - 'traefik.enable=false'
 
     # ----------------------------------------
+    # CLOUDFLARED
+    # Tunneling back to nas
+    # ----------------------------------------
+    cloudflared:
+        image: cloudflare/cloudflared:latest
+        container_name: cloudflared
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
+
+    # ----------------------------------------
     # TRAEFIK
     # Reverse Proxy + SSL Support
     # ----------------------------------------
