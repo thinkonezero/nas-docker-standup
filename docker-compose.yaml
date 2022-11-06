@@ -205,6 +205,79 @@ services:
             - 'traefik.frontend.entryPoints=https'
 
     # ----------------------------------------
+    # CALIBRE
+    # Book Interface
+    # ----------------------------------------
+    calibre:
+        image: linuxserver/calibre
+        container_name: calibre
+        security_opt:
+            - seccomp:unconfined #optional
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 8080
+            - 8081
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+            - PASSWORD=${CALIBRE_AUTH}
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre:/config'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
+            - '${MEDIA_BASE_PATH}/books:/books'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.one.port=8080'
+            - 'traefik.one.frontend.rule=Host:calibre.${DOMAIN}'
+            - 'traefik.one.frontend.entryPoints=https'
+            - 'traefik.two.port=8081'
+            - 'traefik.two.frontend.rule=Host:calibre-server.${DOMAIN}'
+            - 'traefik.two.frontend.entryPoints=https'
+
+    # ----------------------------------------
+    # READARR
+    # Bool Management
+    # ----------------------------------------
+    readarr:
+        image: linuxserver/readarr
+        container_name: readarr
+        restart: unless-stopped
+        logging:
+            driver: 'json-file'
+            options:
+                max-file: '${LOG_FILE_NUM}'
+                max-size: '${LOG_FILE_SIZE}'
+        networks:
+            - web
+        expose:
+            - 8787
+        environment:
+            - TZ=${TZ}
+            - PUID=${PUID}
+            - PGID=${PGID}
+        volumes:
+            - '${SYNOLOGY_BASE_DOCKER_PATH}/readarr:/config'
+            - '${TORRENTS_PATH}/Completed:/data/Completed'
+            - '${MEDIA_BASE_PATH}/books:/books'
+            - '/etc/localtime:/etc/localtime:ro'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.docker.network=${STACK_NAME}_web'
+            - 'traefik.port=8787'
+            - 'traefik.frontend.rule=Host:readarr.${DOMAIN}'
+            - 'traefik.frontend.entryPoints=https'
+
+    # ----------------------------------------
     # JACKETT
     # RSS/TORZNAB Feed Creator
     # ----------------------------------------
