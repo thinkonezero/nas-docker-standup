@@ -8,6 +8,8 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Deluge](https://deluge-torrent.org/) + [Private Internet Access](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) - for downloading torrents... "safely"
 - [Sonarr](https://sonarr.tv/) - for TV Series Management
 - [Radarr](https://radarr.video/) - for Movie Management
+- [Readarr](https://readarr.com/) - for Book Management
+- [Calibre](https://calibre-ebook.com/) - for Book Access
 - [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
 - [Overseerr](https://overseerr.dev/) - for requesting additional library content
@@ -92,6 +94,7 @@ Make a scheduled task of those commands
 - `WATCHTOWER_NOTIFICATION_EMAIL_PASSWORD=` - Password for your SMTP user to authenticate
 - `SPEEDTEST_INTERVAL=` - Number of seconds between tests to the [Speedtest.net](http://www.speedtest.net/) services
 - `TRAEFIK_AUTH=` - Basic Auth for the Traefik Admin [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
+- `CALIBRE_AUTH=` - Password for the Calibre Web Interface (default username `abc`) [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
 - `STACK_NAME=` - This is used to specify the appropriate network Traefik should use. See #13 for details.
 - `LOG_FILE_NUM=` - The number of log files to keep of the specified size before pruning them
 - `LOG_FILE_SIZE=` - The size of the log files before truncating and rotating the log files
