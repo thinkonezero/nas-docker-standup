@@ -249,7 +249,7 @@ services:
     # Bool Management
     # ----------------------------------------
     readarr:
-        image: linuxserver/readarr
+        image: linuxserver/readarr:develop
         container_name: readarr
         restart: unless-stopped
         logging:
