@@ -232,7 +232,7 @@ services:
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre:/config'
             - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/books:/books'
+            - '${MEDIA_BASE_PATH}/Books:/books'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
@@ -268,7 +268,7 @@ services:
         volumes:
             - '${SYNOLOGY_BASE_DOCKER_PATH}/readarr:/config'
             - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/books:/books'
+            - '${MEDIA_BASE_PATH}/Books:/books'
             - '/etc/localtime:/etc/localtime:ro'
         labels:
             - 'traefik.enable=true'
