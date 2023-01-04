@@ -18,586 +18,272 @@ version: '3'
 ######################
 
 services:
+  # ----------------------------------------
+  # ORGANIZR
+  # Web Frontend for Management
+  # ----------------------------------------
+  organizr:
+    image: organizr/organizr
+    container_name: organizr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${ORGANIZR_PORT}:80'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # ORGANIZR
-    # Web Frontend for Management
-    # ----------------------------------------
-    organizr:
-        image: organizr/organizr
-        container_name: organizr
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 80
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=80'
-            - 'traefik.frontend.rule=Host:manage.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # DELUGEVPN
+  # Deluge Torrent Client + VPN
+  # ----------------------------------------
+  arch-delugevpn:
+    image: binhex/arch-delugevpn
+    container_name: delugevpn
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${DELUGE_PORT}:8112'
+      - '8118:8118'
+      - '58846:58846'
+      - '58946:58946'
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VPN_ENABLED=yes
+      - VPN_USER=${VPNUNAME}
+      - VPN_PASS=${VPNPASS}
+      - VPN_REMOTE=${VPN_REMOTE}
+      - VPN_PORT=1198
+      - VPN_PROTOCOL=udp
+      - VPN_DEVICE_TYPE=tun
+      - VPN_PROV=${VPNPROVIDER}
+      - STRONG_CERTS=no
+      - ENABLE_PRIVOXY=yes
+      - STRICT_PORT_FORWARD=yes
+      - LAN_NETWORK=${CIDR_ADDRESS}
+      - NAME_SERVERS=37.235.1.174,8.8.8.8,37.235.1.177,8.8.4.4
+      - DEBUG=false
+    volumes:
+      - '${TORRENTS_PATH}:/data'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # DELUGEVPN
-    # Deluge Torrent Client + VPN
-    # ----------------------------------------
-    arch-delugevpn:
-        image: binhex/arch-delugevpn
-        container_name: delugevpn
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        ports:
-            - '${IP_ADDRESS}:8118:8118'
-            - '${IP_ADDRESS}:58846:58846'
-            - '${IP_ADDRESS}:58946:58946'
-        expose:
-            - 8112
-        cap_add:
-            - NET_ADMIN
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - VPN_ENABLED=yes
-            - VPN_USER=${VPNUNAME}
-            - VPN_PASS=${VPNPASS}
-            - VPN_REMOTE=${VPN_REMOTE}
-            - VPN_PORT=1198
-            - VPN_PROTOCOL=udp
-            - VPN_DEVICE_TYPE=tun
-            - VPN_PROV=${VPNPROVIDER}
-            - STRONG_CERTS=no
-            - ENABLE_PRIVOXY=yes
-            - STRICT_PORT_FORWARD=yes
-            - LAN_NETWORK=${CIDR_ADDRESS}
-            - NAME_SERVERS=37.235.1.174,8.8.8.8,37.235.1.177,8.8.4.4
-            - DEBUG=false
-        volumes:
-            - '${TORRENTS_PATH}:/data'
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8112'
-            - 'traefik.frontend.rule=Host:deluge.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # SONARR
+  # TV Series Management
+  # ----------------------------------------
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${SONARR_PORT}:8989'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
+      - '${TORRENTS_PATH}/Completed:/data/Completed'
+      - '${MEDIA_BASE_PATH}/TVShows:/tv'
+      - '${MEDIA_BASE_PATH}/Kid TV:/kidtv'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # SONARR
-    # TV Series Management
-    # ----------------------------------------
-    sonarr:
-        image: linuxserver/sonarr
-        container_name: sonarr
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 8989
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/sonarr:/config'
-            - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/TVShows:/tv'
-            - '${MEDIA_BASE_PATH}/Kid TV:/kidtv'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8989'
-            - 'traefik.frontend.rule=Host:sonarr.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # RADARR
+  # Movie Management
+  # ----------------------------------------
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${RADARR_PORT}:7878'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
+      - '${TORRENTS_PATH}/Completed:/data/Completed'
+      - '${MEDIA_BASE_PATH}/Movies:/movies'
+      - '${MEDIA_BASE_PATH}/Kid Movies:/kidmovies'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # RADARR
-    # Movie Management
-    # ----------------------------------------
-    radarr:
-        image: linuxserver/radarr
-        container_name: radarr
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 7878
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr:/config'
-            - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/Movies:/movies'
-            - '${MEDIA_BASE_PATH}/Kid Movies:/kidmovies'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=7878'
-            - 'traefik.frontend.rule=Host:radarr.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # RADARR 4K
+  # Movie Management
+  # ----------------------------------------
+  radarr4k:
+    image: linuxserver/radarr
+    container_name: radarr4k
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${RADARR_4K_PORT}:7878'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
+      - '${TORRENTS_PATH}/Completed:/data/Completed'
+      - '${MEDIA_BASE_PATH}/Movies4k:/movies4k'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # RADARR 4K
-    # Movie Management
-    # ----------------------------------------
-    radarr4k:
-        image: linuxserver/radarr
-        container_name: radarr4k
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 7878
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/radarr4k:/config'
-            - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/Movies4k:/movies4k'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=7878'
-            - 'traefik.frontend.rule=Host:radarr4k.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # CALIBRE
+  # Book Interface
+  # ----------------------------------------
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    security_opt:
+      - seccomp:unconfined #optional
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${CALIBRE_PORT}:8080'
+      - '${CALIBRE_SERVER_PORT}:8181'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - PASSWORD=${CALIBRE_AUTH}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre:/config'
+      - '${TORRENTS_PATH}/Completed:/data/Completed'
+      - '${MEDIA_BASE_PATH}/Books:/books'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # CALIBRE
-    # Book Interface
-    # ----------------------------------------
-    calibre:
-        image: linuxserver/calibre
-        container_name: calibre
-        security_opt:
-            - seccomp:unconfined #optional
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 8080
-            - 8081
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - PASSWORD=${CALIBRE_AUTH}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre:/config'
-            - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/Books:/books'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.one.port=8080'
-            - 'traefik.one.frontend.rule=Host:calibre.${DOMAIN}'
-            - 'traefik.one.frontend.entryPoints=https'
-            - 'traefik.two.port=8081'
-            - 'traefik.two.frontend.rule=Host:calibre-server.${DOMAIN}'
-            - 'traefik.two.frontend.entryPoints=https'
+  # ----------------------------------------
+  # READARR
+  # Bool Management
+  # ----------------------------------------
+  readarr:
+    image: linuxserver/readarr:develop
+    container_name: readarr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${READARR_PORT}:8787'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/readarr:/config'
+      - '${TORRENTS_PATH}/Completed:/data/Completed'
+      - '${MEDIA_BASE_PATH}/Books:/books'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # READARR
-    # Bool Management
-    # ----------------------------------------
-    readarr:
-        image: linuxserver/readarr:develop
-        container_name: readarr
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 8787
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/readarr:/config'
-            - '${TORRENTS_PATH}/Completed:/data/Completed'
-            - '${MEDIA_BASE_PATH}/Books:/books'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8787'
-            - 'traefik.frontend.rule=Host:readarr.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # JACKETT
+  # RSS/TORZNAB Feed Creator
+  # ----------------------------------------
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${JACKETT_PORT}:9117'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
+      - '${TORRENTS_PATH}/Completed:/downloads'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # JACKETT
-    # RSS/TORZNAB Feed Creator
-    # ----------------------------------------
-    jackett:
-        image: linuxserver/jackett
-        container_name: jackett
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 9117
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
-            - '${TORRENTS_PATH}/Completed:/downloads'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=9117'
-            - 'traefik.frontend.rule=Host:jackett.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
+  # ----------------------------------------
+  # TAUTULLI
+  # Monitoring Service for PLEX Usage
+  # ----------------------------------------
+  tautulli:
+    image: linuxserver/tautulli
+    container_name: tautulli
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${TAUTULLI_PORT}:8181'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
+      - '${SYNOLOGY_PLEX_PATH}/AppData/Plex Media Server/Logs:/logs:ro'
+      - '/etc/localtime:/etc/localtime:ro'
 
-    # ----------------------------------------
-    # TAUTULLI
-    # Monitoring Service for PLEX Usage
-    # ----------------------------------------
-    tautulli:
-        image: linuxserver/tautulli
-        container_name: tautulli
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 8181
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
-            - '${SYNOLOGY_PLEX_PATH}/AppData/Plex Media Server/Logs:/logs:ro'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8181'
-            - 'traefik.frontend.rule=Host:tautulli.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-
-    # ----------------------------------------
-    # Overseerr
-    # Request Service for Plex Content
-    # ----------------------------------------
-    overseerr:
-        image: sctx/overseerr:latest
-        container_name: overseerr
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 5055
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - LOG_LEVEL=info
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/app/config'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=5055'
-            - 'traefik.frontend.rule=Host:request.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-
-    # ----------------------------------------
-    # PORTAINER
-    # Docker Container Management
-    # ----------------------------------------
-    portainer:
-        image: portainer/portainer-ce
-        container_name: portainer
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        expose:
-            - 9000
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/portainer:/data'
-            - '/var/run/docker.sock:/var/run/docker.sock'
-            - '/etc/localtime:/etc/localtime:ro'
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=9000'
-            - 'traefik.frontend.rule=Host:portainer.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-
-    # ----------------------------------------
-    # WATCHTOWER
-    # Automatic Update Service for Docker VMs
-    # ----------------------------------------
-    watchtower:
-        image: containrrr/watchtower
-        container_name: watchtower
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - internal
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - WATCHTOWER_NOTIFICATIONS=email
-            - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${WATCHTOWER_NOTIFICATION_EMAIL_FROM}
-            - WATCHTOWER_NOTIFICATION_EMAIL_TO=${WATCHTOWER_NOTIFICATION_EMAIL_TO}
-            - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER}
-            - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT}
-            - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER}
-            - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD}
-        volumes:
-            - '/var/run/docker.sock:/var/run/docker.sock'
-            - '/etc/ssl/certs:/etc/ssl/certs'
-        command: --schedule @midnight --cleanup
-        labels:
-            - 'traefik.enable=false'
-
-    # ----------------------------------------
-    # InfluxDB
-    # Time Series Database
-    # ----------------------------------------
-    influxdb:
-        image: influxdb:1.8.4
-        container_name: influxdb
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - internal
-        expose:
-            - 8086
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - INFLUXDB_DB=speedtest;
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/influxdb:/var/lib/influxdb'
-        labels:
-            - 'traefik.enable=false'
-
-    # ----------------------------------------
-    # Chronograf
-    # Dashboard Tool for Speedtest
-    # ----------------------------------------
-    chronograf:
-        image: chronograf
-        container_name: chronograf
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-            - internal
-        expose:
-            - 8888
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/chronograf:/var/lib/chronograf'
-        command:
-            - chronograf
-            - --influxdb-url=http://influxdb:8086
-        depends_on:
-            - influxdb
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8888'
-            - 'traefik.frontend.rule=Host:chronograf.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-
-    # ----------------------------------------
-    # Speedtest
-    # Speedtest-CLI and Post to InfluxDB
-    # ----------------------------------------
-    speedtest:
-        image: phikai/speedtest
-        container_name: speedtest
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - internal
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-            - TEST_INTERVAL=${SPEEDTEST_INTERVAL}
-        depends_on:
-            - influxdb
-        labels:
-            - 'traefik.enable=false'
-
-    # ----------------------------------------
-    # CLOUDFLARED
-    # Tunneling back to nas
-    # ----------------------------------------
-    cloudflared:
-        image: cloudflare/cloudflared:latest
-        container_name: cloudflared
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN}
-
-    # ----------------------------------------
-    # TRAEFIK
-    # Reverse Proxy + SSL Support
-    # ----------------------------------------
-    traefik:
-        image: traefik:v1.7.16
-        container_name: traefik
-        restart: unless-stopped
-        logging:
-            driver: 'json-file'
-            options:
-                max-file: '${LOG_FILE_NUM}'
-                max-size: '${LOG_FILE_SIZE}'
-        networks:
-            - web
-        ports:
-            - '80:80'
-            - '443:443'
-            - '8080:8080'
-        environment:
-            - TZ=${TZ}
-            - PUID=${PUID}
-            - PGID=${PGID}
-        volumes:
-            - '/var/run/docker.sock:/var/run/docker.sock'
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik:/etc/traefik/acme'
-            - '${SYNOLOGY_BASE_DOCKER_PATH}/traefik/traefik.toml:/traefik.toml'
-        command:
-            - --docker
-            - --api
-            - --loglevel=debug
-            - "--entryPoints=Name:https Address::443 TLS"
-            - "--entryPoints=Name:http Address::80 Redirect.EntryPoint:https"
-            - --acme.entrypoint=https
-            - --acme=true
-            - --acme.domains=${DOMAIN}
-            - --acme.email=${EMAIL}
-            - --acme.ondemand=true
-            - --acme.onhostrule
-            - --acme.httpchallenge
-            - --acme.httpchallenge.entrypoint=http
-            - --acme.storage=etc/traefik/acme/acme.json
-            - --docker.watch
-        labels:
-            - 'traefik.enable=true'
-            - 'traefik.docker.network=${STACK_NAME}_web'
-            - 'traefik.port=8080'
-            - 'traefik.frontend.rule=Host:traefik.${DOMAIN}'
-            - 'traefik.frontend.entryPoints=https'
-            - 'traefik.frontend.auth.basic=${TRAEFIK_AUTH}'
-
-########################
-# GLOBAL CONFIGURATION #
-########################
-
-networks:
-    internal:
-    web:
+  # ----------------------------------------
+  # Overseerr
+  # Request Service for Plex Content
+  # ----------------------------------------
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${OVERSEERR_PORT}:5055'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - LOG_LEVEL=info
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/app/config'
+      - '/etc/localtime:/etc/localtime:ro'
