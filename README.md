@@ -13,24 +13,18 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
 - [Overseerr](https://overseerr.dev/) - for requesting additional library content
-- [Portainer](https://portainer.io/) - for managing all of your Docker containers
-- [Watchtower](https://containrrr.dev/watchtower) - for automatically updating running containers
 - [Organizr](https://github.com/causefx/Organizr) - for web based portal to access services
-- [InfluxDB](https://www.influxdata.com/) - for time series based database storage
-- [Chronograf](https://www.influxdata.com/time-series-platform/chronograf/) - for making pretty dashboards out of the database data
-- [SpeedTest](https://github.com/sivel/speedtest-cli/) - for performing a speedtest and posting data to the database
-- [Cloudflared][https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/] - zero trust tunnel setup with Cloudflare to SSH to host
-- [Traefik](hhttps://traefik.io/) - Reverse Proxy and SSL Support
 
 This project was heavily inspired by the [MediaBox](https://github.com/tom472/mediabox) project... Many Thanks!
 
 ## Known Issues
-- [ ] Sometimes the Deluge + VPN Container disconnects and can't re-establish a forwarded port connection. 
 
+- [ ] Sometimes the Deluge + VPN Container disconnects and can't re-establish a forwarded port connection.
 
 ## Install Instructions
 
 ### Prerequisites
+
 - Synology NAS
 - VPN Account from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - [Git](https://git-scm.com/)
@@ -39,6 +33,7 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 - [Docker-Compose](https://docs.docker.com/compose/)
 
 ### Server Configuration
+
 1. Setup Synology NAS and [install DSM](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_install_DSM)
 1. Install [Docker](https://www.synology.com/en-us/dsm/packages/Docker) via Add-on Packages
 1. Install Plex natively from [Plex.tv](https://www.plex.tv/media-server-downloads/)
@@ -48,7 +43,7 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 1. ~~Upgrade Docker using [synology-docker](https://github.com/markdumay/synology-docker)~~ Known Issue: https://github.com/markdumay/synology-docker/issues/22
 1. Create Docker Group and Add User
 
-```
+```plaintext
 - create the group "docker" from the ui or cli (sudo synogroup --add docker)
 - make it the group of the docker.sock: sudo chown root:docker /var/run/docker.sock
 - assign the user to the docker group in the ui or cli (sudo synogroup --member docker {username})
@@ -58,10 +53,11 @@ This project was heavily inspired by the [MediaBox](https://github.com/tom472/me
 1. Make sure DSM isn't using 80/443 with [guide](https://www.smarthomebeginner.com/synology-docker-media-server/#8_Ensure_Ports_80_and_443_are_Free)
 1. Enable Tunnel stuff for VPN: https://forums.unraid.net/topic/44109-support-binhex-delugevpn/page/58/?tab=comments#comment-542434
 
-```
+```plaintext
 sudo insmod /lib/modules/tun.ko
 sudo insmod /lib/modules/iptable_mangle.ko
 ```
+
 Make a scheduled task of those commands
 
 1. Clone Repo `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
@@ -72,38 +68,28 @@ Make a scheduled task of those commands
 1. Profit.
 
 ### Environment File
+
 - `LOCALUSER=` - This is the local user of your linux account and account running docker
 - `HOSTNAME=` - Hostame of the server, can be found by executing `hostname` from command line
 - `IP_ADDRESS=` - Local IP Address of the server, should be static
 - `PUID=` - UID of the local user, can be found by executing `id` from the command line
 - `PGID=` - GID of the local user, can be found by executing `id` from the command line
+- `LOG_FILE_NUM=` - The number of log files to keep of the specified size before pruning them
+- `LOG_FILE_SIZE=` - The size of the log files before truncating and rotating the log files
 - `VPNUNAME=` - Your VPN username from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - `VPNPASS=` - Your VPN password from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
 - `VPNPROVIDER=` - Your VPN provider, name must match a folder specified in `ovpn`. This defaults to `pia` if you copied `sample.env`.
 - `VPN_REMOTE=` - The remote server you want to connect to (must support port forwarding)
 - `CIDR_ADDRESS=` - IP/netmask entries which allow access to the server without requiring authorization. We recommend you set this only if you do not sign in your server. For example `192.168.1.0/24,172.16.0.0/16` will allow access to the entire `192.168.1.x` range and the `172.16.x.x`
 - `TZ=` - Set the timezone inside the container. For example: `Europe/London`. The complete list can be found here: [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-- `EMAIL=` - Email address to be used for Let's Encrypt SSL certificate validation - `someone@somewhere.com`
-- `DOMAIN=` - Public domain to use for accessing services via a public domain - `server.domain.com`
-- `WATCHTOWER_NOTIFICATIONS=` - Default to `email` for using email notifications
-- `WATCHTOWER_NOTIFICATION_EMAIL_TO=` - Email address you'd like Watchtower to notify for any notifications - `someone@somewhere.com`
-- `WATCHTOWER_NOTIFICATION_EMAIL_FROM=` - From address that your SMTP server uses to send email - `someone@somewhere.com`
-- `WATCHTOWER_NOTIFICATION_EMAIL_SERVER=` - Servername of your SMTP server - `smtp.domain.com`
-- `WATCHTOWER_NOTIFICATION_EMAIL_PORT=` - Port that your SMTP server uses to connect - `587`
-- `WATCHTOWER_NOTIFICATION_EMAIL_USER=` - Username that your SMTP server uses to authenticate
-- `WATCHTOWER_NOTIFICATION_EMAIL_PASSWORD=` - Password for your SMTP user to authenticate
-- `SPEEDTEST_INTERVAL=` - Number of seconds between tests to the [Speedtest.net](http://www.speedtest.net/) services
-- `TRAEFIK_AUTH=` - Basic Auth for the Traefik Admin [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
 - `CALIBRE_AUTH=` - Password for the Calibre Web Interface (default username `abc`) [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
-- `STACK_NAME=` - This is used to specify the appropriate network Traefik should use. See #13 for details.
-- `LOG_FILE_NUM=` - The number of log files to keep of the specified size before pruning them
-- `LOG_FILE_SIZE=` - The size of the log files before truncating and rotating the log files
 - `MEDIA_BASE_PATH=` - This is the base path of your media directory used to make similar paths easier - `/volume1/media`
 - `SNYOLOGY_BASE_DOCKER_PATH=` - The base path to the docker directory where container data is stored - `/volume1/docker`
 - `SNYOLOGY_PLEX_PATH=` - The path to the installation directory for Plex Media Server - `/volume1/PlexMediaServer`
 - `TORRENTS_PATH=` - The base path for the torrents download/in-progress directories - `/volume1/torrents`
 
 ### Email/SMTP Service
+
 - [Mailgun](https://documentation.mailgun.com/en/latest/quickstart.html) has an excellent QuickStart Guide
 - Check out the sending via [SMTP](https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-via-api)
 - Make sure to also [verify your domain](https://documentation.mailgun.com/en/latest/quickstart-sending.html#verify-your-domain)
