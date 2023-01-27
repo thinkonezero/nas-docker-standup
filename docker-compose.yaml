@@ -90,7 +90,7 @@ services:
   # TV Series Management
   # ----------------------------------------
   sonarr:
-    image: linuxserver/sonarr
+    image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     restart: unless-stopped
     logging:
@@ -116,7 +116,7 @@ services:
   # Movie Management
   # ----------------------------------------
   radarr:
-    image: linuxserver/radarr
+    image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     restart: unless-stopped
     logging:
@@ -142,7 +142,7 @@ services:
   # Movie Management
   # ----------------------------------------
   radarr4k:
-    image: linuxserver/radarr
+    image: lscr.io/linuxserver/radarr:latest
     container_name: radarr4k
     restart: unless-stopped
     logging:
@@ -167,7 +167,7 @@ services:
   # Book Interface
   # ----------------------------------------
   calibre:
-    image: linuxserver/calibre
+    image: lscr.io/linuxserver/calibre:latest
     container_name: calibre
     security_opt:
       - seccomp:unconfined #optional
@@ -196,7 +196,7 @@ services:
   # Bool Management
   # ----------------------------------------
   readarr:
-    image: linuxserver/readarr:develop
+    image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
     restart: unless-stopped
     logging:
@@ -221,7 +221,7 @@ services:
   # RSS/TORZNAB Feed Creator
   # ----------------------------------------
   jackett:
-    image: linuxserver/jackett
+    image: lscr.io/linuxserver/jackett:latest
     container_name: jackett
     restart: unless-stopped
     logging:
@@ -245,7 +245,7 @@ services:
   # Monitoring Service for PLEX Usage
   # ----------------------------------------
   tautulli:
-    image: linuxserver/tautulli
+    image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
     restart: unless-stopped
     logging:
@@ -269,7 +269,7 @@ services:
   # Request Service for Plex Content
   # ----------------------------------------
   overseerr:
-    image: sctx/overseerr:latest
+    image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
     restart: unless-stopped
     logging:
