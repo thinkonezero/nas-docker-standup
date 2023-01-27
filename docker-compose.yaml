@@ -285,5 +285,5 @@ services:
       - PGID=${PGID}
       - LOG_LEVEL=info
     volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/app/config'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/config'
       - '/etc/localtime:/etc/localtime:ro'
