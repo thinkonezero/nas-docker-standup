@@ -192,6 +192,31 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
+  # CALIBRE-WEB
+  # End User Book Interface
+  # ----------------------------------------
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${CALIBRE_WEB_PORT}:8083'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre-web:/config'
+      - '${MEDIA_BASE_PATH}/Books:/books'
+      - '/etc/localtime:/etc/localtime:ro'
+
+  # ----------------------------------------
   # READARR
   # Bool Management
   # ----------------------------------------
