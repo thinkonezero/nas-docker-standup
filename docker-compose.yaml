@@ -247,7 +247,7 @@ services:
   # ----------------------------------------
   lazylibrarian:
     image: lscr.io/linuxserver/lazylibrarian:latest
-    container_name: readalazylibrarianrr
+    container_name: lazylibrarian
     restart: unless-stopped
     logging:
       driver: 'json-file'
