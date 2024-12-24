@@ -260,6 +260,7 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/lazylibrarian:/config'
       - '${TORRENTS_PATH}/Completed:/data/Completed'
