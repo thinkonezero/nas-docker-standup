@@ -217,57 +217,6 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
-  # READARR
-  # Book Management
-  # ----------------------------------------
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    restart: unless-stopped
-    logging:
-      driver: 'json-file'
-      options:
-        max-file: '${LOG_FILE_NUM}'
-        max-size: '${LOG_FILE_SIZE}'
-    ports:
-      - '${READARR_PORT}:8787'
-    environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-    volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/readarr:/config'
-      - '${TORRENTS_PATH}/Completed:/data/Completed'
-      - '${MEDIA_BASE_PATH}/Books:/books'
-      - '/etc/localtime:/etc/localtime:ro'
-
-  # ----------------------------------------
-  # LAZYLIBRARIAN
-  # Also Book Management
-  # ----------------------------------------
-  lazylibrarian:
-    image: lscr.io/linuxserver/lazylibrarian:latest
-    container_name: lazylibrarian
-    restart: unless-stopped
-    logging:
-      driver: 'json-file'
-      options:
-        max-file: '${LOG_FILE_NUM}'
-        max-size: '${LOG_FILE_SIZE}'
-    ports:
-      - '${LAZYLIBRARIAN_PORT}:5299'
-    environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - DOCKER_MODS=linuxserver/mods:universal-calibre
-    volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/lazylibrarian:/config'
-      - '${TORRENTS_PATH}/Completed:/data/Completed'
-      - '${MEDIA_BASE_PATH}/Books:/books'
-      - '/etc/localtime:/etc/localtime:ro'
-
-  # ----------------------------------------
   # JACKETT
   # RSS/TORZNAB Feed Creator
   # ----------------------------------------

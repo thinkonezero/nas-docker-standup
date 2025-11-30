@@ -8,8 +8,8 @@ This is a simple docker-compose configuration to standup a Synology NAS.
 - [Deluge](https://deluge-torrent.org/) + [Private Internet Access](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) - for downloading torrents... "safely"
 - [Sonarr](https://sonarr.tv/) - for TV Series Management
 - [Radarr](https://radarr.video/) - for Movie Management
-- [Readarr](https://readarr.com/) - for Book Management
-- [Calibre](https://calibre-ebook.com/) - for Book Access
+- [Calibre](https://calibre-ebook.com/) - for Book Management
+- [Calibre-Web](https://github.com/janeczku/calibreweb) - for End User Book Interface
 - [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
 - [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
 - [Overseerr](https://overseerr.dev/) - for requesting additional library content
@@ -84,8 +84,8 @@ Make a scheduled task of those commands
 - `TZ=` - Set the timezone inside the container. For example: `Europe/London`. The complete list can be found here: [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 - `CALIBRE_AUTH=` - Password for the Calibre Web Interface (default username `abc`) [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
 - `MEDIA_BASE_PATH=` - This is the base path of your media directory used to make similar paths easier - `/volume1/media`
-- `SNYOLOGY_BASE_DOCKER_PATH=` - The base path to the docker directory where container data is stored - `/volume1/docker`
-- `SNYOLOGY_PLEX_PATH=` - The path to the installation directory for Plex Media Server - `/volume1/PlexMediaServer`
+- `SYNOLOGY_BASE_DOCKER_PATH=` - The base path to the docker directory where container data is stored - `/volume1/docker`
+- `SYNOLOGY_PLEX_PATH=` - The path to the installation directory for Plex Media Server - `/volume1/PlexMediaServer`
 - `TORRENTS_PATH=` - The base path for the torrents download/in-progress directories - `/volume1/torrents`
 
 ### Email/SMTP Service
