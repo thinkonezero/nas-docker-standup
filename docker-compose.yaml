@@ -287,3 +287,49 @@ services:
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/config'
       - '/etc/localtime:/etc/localtime:ro'
+
+  # ----------------------------------------
+  # Profilarr
+  # Profile Updater for Sonarr/Radarr
+  # ----------------------------------------
+  profilarr:
+    image: santiagosayshey/profilarr:latest
+    container_name: profilarr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${PROFILARR_PORT}:6868'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/profilarr:/config'
+      - '/etc/localtime:/etc/localtime:ro'
+
+  # ----------------------------------------
+  # HUNTARR
+  # Profile Updater for Sonarr/Radarr
+  # ----------------------------------------
+  huntarr:
+    image: ghcr.io/plexguide/huntarr:latest
+    container_name: huntarr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${HUNTARR_PORT}:9705'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/huntarr:/config'
+      - '/etc/localtime:/etc/localtime:ro'
