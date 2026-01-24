@@ -113,7 +113,7 @@ Make a scheduled task of those commands
 
 If this project has helped you in anyway, and you'd like to say thanks...
 
-[![Donate](https://img.shields.io/badge/Donate-SquareCash-brightgreen.svg)](https://cash.me/$phikai)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G71SUNID)
 
 You can also [gift a Plex Pass](https://www.plex.tv/plex-pass/gift/) subscription as a great way to show your appreciation.
 
