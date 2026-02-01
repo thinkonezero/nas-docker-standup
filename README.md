@@ -1,132 +1,78 @@
-# NAS Docker Standup
+# NAS Media Docker Standup
 
----
-This is a simple docker-compose configuration to standup a Synology NAS.
+A comprehensive docker-compose configuration to stand up a full-featured media management and download stack on a Synology NAS.
 
-## Services
+## 🚀 Services
 
-- [Deluge](https://deluge-torrent.org/) + [Private Internet Access](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) - for downloading torrents... "safely"
-- [Sonarr](https://sonarr.tv/) - for TV Series Management
-- [Radarr](https://radarr.video/) - for Movie Management
-- [Calibre](https://calibre-ebook.com/) - for Book Management
-- [Calibre-Web](https://github.com/janeczku/calibreweb) - for End User Book Interface
-- [Jackett](https://github.com/Jackett/Jackett) - for Torrent Tracker feeds
-- [Tautulli](http://tautulli.com/) - for Plex library statistics and usage
-- [Overseerr](https://overseerr.dev/) - for requesting additional library content
-- [Profilarr](https://github.com/Dictionarry-Hub/profilarr) - for updating Sonarr/Radarr profiles
-- [Huntarr](https://github.com/plexguide/Huntarr.io) - for hunting new content
-- [Organizr](https://github.com/causefx/Organizr) - for web based portal to access services
+| Service | Category | Description |
+| :--- | :--- | :--- |
+| **DelugeVPN** | Download | Torrent client routed through a secure VPN tunnel. |
+| **Sonarr/Radarr** | Management | Automated TV and Movie collection management. |
+| **Calibre/Web** | Reading | E-book library management and web reader. |
+| **Plex Companion** | Monitoring | **Tautulli** for stats and **Overseerr** for requests. |
+| **Maintenance** | Optimization | **Profilarr**, **Huntarr**, and **Jackett**. |
+| **Organizr** | Portal | A unified dashboard to access all services. |
 
-This project was heavily inspired by the [MediaBox](https://github.com/tom472/mediabox) project... Many Thanks!
+## 📋 Prerequisites
 
-## Known Issues
+- Synology NAS (DSM 7.x recommended)
+- VPN Account ([PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350) supported)
+- [Git](https://git-scm.com/) installed via SynoCommunity
+- [Docker / Container Manager](https://www.docker.com/)
 
-- [ ] Sometimes the Deluge + VPN Container disconnects and can't re-establish a forwarded port connection.
+## 🛠️ Setup
 
-## Install Instructions
-
-### Prerequisites
-
-- Synology NAS
-- VPN Account from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
-- [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/)
-- [Python 2.7](https://www.python.org/)
-- [Docker-Compose](https://docs.docker.com/compose/)
-
-### Server Configuration
-
-1. Setup Synology NAS and [install DSM](https://www.synology.com/en-us/knowledgebase/DSM/tutorial/General_Setup/How_to_install_DSM)
-1. Install [Docker](https://www.synology.com/en-us/dsm/packages/Docker) via Add-on Packages
-1. Install Plex natively from [Plex.tv](https://www.plex.tv/media-server-downloads/)
-1. Add the SynoCommunity package source via [easy install](https://synocommunity.com/#easy-install)
-1. Install Git package from SynoCommunity
-1. Enable SSH Access
-1. ~~Upgrade Docker using [synology-docker](https://github.com/markdumay/synology-docker)~~ Known Issue: https://github.com/markdumay/synology-docker/issues/22
-1. Create Docker Group and Add User
-
-```plaintext
-- create the group "docker" from the ui or cli (sudo synogroup --add docker)
-- make it the group of the docker.sock: sudo chown root:docker /var/run/docker.sock
-- assign the user to the docker group in the ui or cli (sudo synogroup --member docker {username})
-- login into ssh as {username} and try (if you were already logged in before you created the group, logout and relogin)
-```
-
-1. Make sure DSM isn't using 80/443 with [guide](https://www.smarthomebeginner.com/synology-docker-media-server/#8_Ensure_Ports_80_and_443_are_Free)
-1. Enable Tunnel stuff for VPN: https://forums.unraid.net/topic/44109-support-binhex-delugevpn/page/58/?tab=comments#comment-542434
-
-```plaintext
+### 1. Synology System Preparation
+Before deploying, your NAS needs specific kernel modules for the VPN tunnel:
+```bash
 sudo insmod /lib/modules/tun.ko
 sudo insmod /lib/modules/iptable_mangle.ko
 ```
+*Tip: Add these to a "Triggered Task" in Synology Task Scheduler to run on boot.*
 
-Make a scheduled task of those commands
+### 2. Docker Permissions
+Ensure your user has access to the Docker socket:
+```bash
+sudo synogroup --add docker
+sudo chown root:docker /var/run/docker.sock
+sudo synogroup --member docker {your_username}
+```
 
-1. Clone Repo `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
-1. Copy Sample Environement File `cp sample.env .env`
-1. Edit `.env` to match your environment
-1. Run Docker Environment `docker-compose up -d`
-1. ???
-1. Profit.
+### 3. Installation
+1. **Clone**: `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
+2. **Environment**: `cp sample.env .env` and update with your VPN credentials and paths.
+3. **Deploy**: `docker compose up -d`
 
-### Environment File
+## 🌐 Accessing Apps
 
-- `LOCALUSER=` - This is the local user of your linux account and account running docker
-- `HOSTNAME=` - Hostame of the server, can be found by executing `hostname` from command line
-- `IP_ADDRESS=` - Local IP Address of the server, should be static
-- `PUID=` - UID of the local user, can be found by executing `id` from the command line
-- `PGID=` - GID of the local user, can be found by executing `id` from the command line
-- `LOG_FILE_NUM=` - The number of log files to keep of the specified size before pruning them
-- `LOG_FILE_SIZE=` - The size of the log files before truncating and rotating the log files
-- `VPNUNAME=` - Your VPN username from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
-- `VPNPASS=` - Your VPN password from [PIA](https://www.privateinternetaccess.com/pages/buy-vpn/toz) or [TorGuard](https://torguard.net/aff.php?aff=4350)
-- `VPNPROVIDER=` - Your VPN provider, name must match a folder specified in `ovpn`. This defaults to `pia` if you copied `sample.env`.
-- `VPN_REMOTE=` - The remote server you want to connect to (must support port forwarding)
-- `CIDR_ADDRESS=` - IP/netmask entries which allow access to the server without requiring authorization. We recommend you set this only if you do not sign in your server. For example `192.168.1.0/24,172.16.0.0/16` will allow access to the entire `192.168.1.x` range and the `172.16.x.x`
-- `TZ=` - Set the timezone inside the container. For example: `Europe/London`. The complete list can be found here: [https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-- `CALIBRE_AUTH=` - Password for the Calibre Web Interface (default username `abc`) [htpasswd Generator](http://www.htaccesstools.com/htpasswd-generator/)
-- `MEDIA_BASE_PATH=` - This is the base path of your media directory used to make similar paths easier - `/volume1/media`
-- `SYNOLOGY_BASE_DOCKER_PATH=` - The base path to the docker directory where container data is stored - `/volume1/docker`
-- `SYNOLOGY_PLEX_PATH=` - The path to the installation directory for Plex Media Server - `/volume1/PlexMediaServer`
-- `TORRENTS_PATH=` - The base path for the torrents download/in-progress directories - `/volume1/torrents`
+| App | Default URL |
+| :--- | :--- |
+| **Organizr** | `http://<NAS_IP>:${ORGANIZR_PORT}` |
+| **Deluge Web** | `http://<NAS_IP>:${DELUGE_PORT}` |
+| **Sonarr** | `http://<NAS_IP>:${SONARR_PORT}` |
+| **Radarr** | `http://<NAS_IP>:${RADARR_PORT}` |
+| **Overseerr** | `http://<NAS_IP>:${OVERSEERR_PORT}` |
 
-### Email/SMTP Service
+## ⚙️ Environment Variables
 
-- [Mailgun](https://documentation.mailgun.com/en/latest/quickstart.html) has an excellent QuickStart Guide
-- Check out the sending via [SMTP](https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-via-api)
-- Make sure to also [verify your domain](https://documentation.mailgun.com/en/latest/quickstart-sending.html#verify-your-domain)
+- `VPNPROVIDER`: Set to `pia` or `torguard`.
+- `VPN_REMOTE`: The VPN server address.
+- `MEDIA_BASE_PATH`: Where your media is stored (e.g., `/volume1/media`).
+- `TORRENTS_PATH`: Where downloads are stored.
 
 ---
 
-## Tips and Tricks
+## 🤝 Support & Appreciation
 
-- [PIA List of Servers](https://helpdesk.privateinternetaccess.com/hc/en-us/articles/219460187-How-do-I-enable-port-forwarding-on-my-VPN-) that support port forwarding
-- [Deluge + PIA FAQ](https://lime-technology.com/forums/topic/44108-support-binhex-general/?tab=comments#comment-433613)
-- [Removing Old/Completed Torrents from Deluge](https://www.cuttingcords.com/home/2015/2/4/auto-deleting-finished-torrents-from-deluge)
-- [Create Series Folder in Sonarr](https://forums.sonarr.tv/t/adding-new-series-path-issues/2751/2)
-- [Proper Encoding of the Portainer Password](https://github.com/portainer/portainer/issues/1506)
-- Open Shell in a Container - [Link 1](http://phase2.github.io/devtools/common-tasks/ssh-into-a-container/), [Link 2](https://stackoverflow.com/a/30173220)
-
-[Potential Script to setup, renew and copy SSL for Plex](https://www.npcglib.org/~stathis/blog/2017/05/13/plex-media-server-over-https-with-letsencrypt-certificates/)
-
----
-
-If this project has helped you in anyway, and you'd like to say thanks...
+If this project has helped you, please consider saying thanks!
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G71SUNID)
+[Gift a Plex Pass](https://www.plex.tv/plex-pass/gift/)
 
-You can also [gift a Plex Pass](https://www.plex.tv/plex-pass/gift/) subscription as a great way to show your appreciation.
-
-_AFFILIATE DISCLOSURE: You can also support this project by purchasing a VPN Subscription via one of the links in this README._
+_AFFILIATE DISCLOSURE: Supporting this project via VPN affiliate links helps maintain these configurations._
 
 ---
 
 # Disclaimer
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.
