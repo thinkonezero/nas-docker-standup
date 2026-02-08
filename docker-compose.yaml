@@ -196,7 +196,7 @@ services:
   # End User Book Interface
   # ----------------------------------------
   calibre-web:
-    image: lscr.io/linuxserver/calibre-web:nightly
+    image: lscr.io/linuxserver/calibre-web:latest
     container_name: calibre-web
     restart: unless-stopped
     logging:
