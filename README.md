@@ -39,9 +39,9 @@ sudo synogroup --member docker {your_username}
 ```
 
 ### 3. Installation
-1. **Clone**: `git clone https://gitlab.com/think-one-zero/nas-docker-standup.git`
+1. **Clone**: `git clone https://gitlab.com/thinkonezero/nas-docker-standup.git`
 2. **Environment**: `cp sample.env .env` and update with your VPN credentials and paths.
-3. **Deploy**: `docker compose up -d`
+3. **Deploy**: `docker-compose up -d`
 
 ## 🌐 Accessing Apps
 
