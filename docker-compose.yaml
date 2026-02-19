@@ -286,7 +286,7 @@ services:
       - PGID=${PGID}
       - LOG_LEVEL=info
     volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/seerr:/config'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/seerr:/app/config'
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
