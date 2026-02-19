@@ -265,12 +265,13 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
-  # Overseerr
+  # Seerr
   # Request Service for Plex Content
   # ----------------------------------------
-  overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
-    container_name: overseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
     restart: unless-stopped
     logging:
       driver: 'json-file'
@@ -278,14 +279,14 @@ services:
         max-file: '${LOG_FILE_NUM}'
         max-size: '${LOG_FILE_SIZE}'
     ports:
-      - '${OVERSEERR_PORT}:5055'
+      - '${SEERR_PORT}:5055'
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
       - LOG_LEVEL=info
     volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/overseerr:/config'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/seerr:/config'
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------

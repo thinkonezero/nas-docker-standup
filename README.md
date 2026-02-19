@@ -9,7 +9,7 @@ A comprehensive docker-compose configuration to stand up a full-featured media m
 | **DelugeVPN** | Download | Torrent client routed through a secure VPN tunnel. |
 | **Sonarr/Radarr** | Management | Automated TV and Movie collection management. |
 | **Calibre/Web** | Reading | E-book library management and web reader. |
-| **Plex Companion** | Monitoring | **Tautulli** for stats and **Overseerr** for requests. |
+| **Plex Companion** | Monitoring | **Tautulli** for stats and **Seerr** for requests. |
 | **Maintenance** | Optimization | **Profilarr**, **Huntarr**, and **Jackett**. |
 | **Organizr** | Portal | A unified dashboard to access all services. |
 
@@ -51,7 +51,7 @@ sudo synogroup --member docker {your_username}
 | **Deluge Web** | `http://<NAS_IP>:${DELUGE_PORT}` |
 | **Sonarr** | `http://<NAS_IP>:${SONARR_PORT}` |
 | **Radarr** | `http://<NAS_IP>:${RADARR_PORT}` |
-| **Overseerr** | `http://<NAS_IP>:${OVERSEERR_PORT}` |
+| **Seerr** | `http://<NAS_IP>:${SEERR_PORT}` |
 
 ## ⚙️ Environment Variables
 
