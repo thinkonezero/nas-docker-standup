@@ -10,7 +10,7 @@ A comprehensive docker-compose configuration to stand up a full-featured media m
 | **Sonarr/Radarr** | Management | Automated TV and Movie collection management. |
 | **Calibre/Web** | Reading | E-book library management and web reader. |
 | **Plex Companion** | Monitoring | **Tautulli** for stats and **Seerr** for requests. |
-| **Maintenance** | Optimization | **Profilarr**, **Huntarr**, and **Jackett**. |
+| **Maintenance** | Optimization | **Profilarr** and **Jackett**. |
 | **Organizr** | Portal | A unified dashboard to access all services. |
 
 ## 📋 Prerequisites
