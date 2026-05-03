@@ -8,7 +8,7 @@ A comprehensive docker-compose configuration to stand up a full-featured media m
 | :--- | :--- | :--- |
 | **DelugeVPN** | Download | Torrent client routed through a secure VPN tunnel. |
 | **Sonarr/Radarr** | Management | Automated TV and Movie collection management. |
-| **Calibre/Web/Shelfmark** | Reading | E-book management, web reader, and automated downloader. |
+| **Calibre/Web/Shelfmark** | Reading | E-book management, web reader, and automated downloader. (Note: Shelfmark routes through the Gluetun VPN in the services project). |
 | **Plex Companion** | Monitoring | **Tautulli** for stats and **Seerr** for requests. |
 | **Maintenance** | Optimization | **Profilarr** and **Jackett**. |
 | **Organizr** | Portal | A unified dashboard to access all services. |

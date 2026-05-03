@@ -325,8 +325,7 @@ services:
       options:
         max-file: '${LOG_FILE_NUM}'
         max-size: '${LOG_FILE_SIZE}'
-    ports:
-      - '${SHELFMARK_PORT}:8084'
+    network_mode: "container:gluetun"
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
