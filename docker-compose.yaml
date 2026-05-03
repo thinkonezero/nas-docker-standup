@@ -311,3 +311,28 @@ services:
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/profilarr:/config'
       - '/etc/localtime:/etc/localtime:ro'
+
+  # ----------------------------------------
+  # SHELFMARK
+  # Book Downloader and Manager
+  # ----------------------------------------
+  shelfmark:
+    image: ghcr.io/calibrain/shelfmark:latest
+    container_name: shelfmark
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${SHELFMARK_PORT}:8084'
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/shelfmark:/config'
+      - '${MEDIA_BASE_PATH}/Books:/books'
+      - '${TORRENTS_PATH}/Completed:/downloads'
+      - '/etc/localtime:/etc/localtime:ro'
