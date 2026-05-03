@@ -332,6 +332,7 @@ services:
       - PGID=${PGID}
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/shelfmark:/config'
+      - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre-web/app.db:/auth/app.db'
       - '${MEDIA_BASE_PATH}/Books:/books'
       - '${TORRENTS_PATH}/Completed:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
