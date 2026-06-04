@@ -163,41 +163,12 @@ services:
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
-  # CALIBRE
-  # Book Interface
+  # CALIBRE-WEB AUTOMATED
+  # E-book Management and Automation
   # ----------------------------------------
-  calibre:
-    image: lscr.io/linuxserver/calibre:latest
-    container_name: calibre
-    security_opt:
-      - seccomp:unconfined #optional
-    restart: unless-stopped
-    logging:
-      driver: 'json-file'
-      options:
-        max-file: '${LOG_FILE_NUM}'
-        max-size: '${LOG_FILE_SIZE}'
-    ports:
-      - '${CALIBRE_PORT}:8080'
-      - '${CALIBRE_SERVER_PORT}:8181'
-    environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - PASSWORD=${CALIBRE_AUTH}
-    volumes:
-      - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre:/config'
-      - '${TORRENTS_PATH}/Completed:/data/Completed'
-      - '${MEDIA_BASE_PATH}/Books:/books'
-      - '/etc/localtime:/etc/localtime:ro'
-
-  # ----------------------------------------
-  # CALIBRE-WEB
-  # End User Book Interface
-  # ----------------------------------------
-  calibre-web:
-    image: lscr.io/linuxserver/calibre-web:latest
-    container_name: calibre-web
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
     restart: unless-stopped
     logging:
       driver: 'json-file'
@@ -210,10 +181,11 @@ services:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+      - HARDCOVER_TOKEN=${HARDCOVER_TOKEN}
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/calibre-web:/config'
-      - '${MEDIA_BASE_PATH}/Books:/books'
+      - '${MEDIA_BASE_PATH}/Books/temp:/cwa-book-ingest'
+      - '${MEDIA_BASE_PATH}/Books:/calibre-library'
       - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
