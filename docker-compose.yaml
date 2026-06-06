@@ -167,7 +167,7 @@ services:
   # E-book Management and Automation
   # ----------------------------------------
   calibre-web-automated:
-    image: crocodilestick/calibre-web-automated:latest
+    image: ghcr.io/new-usemame/calibre-web-nextgen:latest
     container_name: calibre-web-automated
     restart: unless-stopped
     logging:
