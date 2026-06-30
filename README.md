@@ -11,6 +11,7 @@ A comprehensive docker-compose configuration to stand up a full-featured media m
 | **Calibre Web Automated/Shelfmark** | Reading | E-book management, web reader, and automated downloader. (Note: Shelfmark routes through the Gluetun VPN in the services project). |
 | **Plex Companion** | Monitoring | **Tautulli** for stats and **Seerr** for requests. |
 | **Maintenance** | Optimization | **Profilarr** and **Jackett**. |
+| **FlareSolverr** | Maintenance | Proxy server to bypass Cloudflare protection for indexers. |
 | **Organizr** | Portal | A unified dashboard to access all services. |
 
 ## 📋 Prerequisites
@@ -53,6 +54,7 @@ sudo synogroup --member docker {your_username}
 | **Radarr** | `http://<NAS_IP>:${RADARR_PORT}` |
 | **Seerr** | `http://<NAS_IP>:${SEERR_PORT}` |
 | **Shelfmark** | `http://<NAS_IP>:${SHELFMARK_PORT}` |
+| **FlareSolverr** | `http://<NAS_IP>:${FLARESOLVERR_PORT}` |
 
 ## ⚙️ Environment Variables
 

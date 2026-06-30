@@ -308,3 +308,22 @@ services:
       - '${MEDIA_BASE_PATH}/Books:/books'
       - '${TORRENTS_PATH}/Completed:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
+
+  # ----------------------------------------
+  # FLARESOLVERR
+  # Proxy server to bypass Cloudflare protection
+  # ----------------------------------------
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '${LOG_FILE_NUM}'
+        max-size: '${LOG_FILE_SIZE}'
+    ports:
+      - '${FLARESOLVERR_PORT}:8191'
+    environment:
+      - TZ=${TZ}
+
