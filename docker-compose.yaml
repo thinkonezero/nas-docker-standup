@@ -40,6 +40,12 @@ services:
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/organizr:/config'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # DELUGEVPN
@@ -84,6 +90,12 @@ services:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/delugevpn/config:/config'
       - '${SYNOLOGY_BASE_DOCKER_PATH}/ovpn/${VPNPROVIDER}:/config/openvpn'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8112/"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 1m
 
   # ----------------------------------------
   # SONARR
@@ -110,6 +122,12 @@ services:
       - '${MEDIA_BASE_PATH}/TVShows:/tv'
       - '${MEDIA_BASE_PATH}/Kid TV:/kidtv'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8989/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # RADARR
@@ -136,6 +154,12 @@ services:
       - '${MEDIA_BASE_PATH}/Movies:/movies'
       - '${MEDIA_BASE_PATH}/Kid Movies:/kidmovies'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7878/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # RADARR 4K
@@ -161,6 +185,12 @@ services:
       - '${TORRENTS_PATH}/Completed:/data/Completed'
       - '${MEDIA_BASE_PATH}/Movies4k:/movies4k'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7878/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # CALIBRE-WEB AUTOMATED
@@ -187,6 +217,12 @@ services:
       - '${MEDIA_BASE_PATH}/Books/temp:/cwa-book-ingest'
       - '${MEDIA_BASE_PATH}/Books:/calibre-library'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8083"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   # ----------------------------------------
   # JACKETT
@@ -211,6 +247,12 @@ services:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/jackett:/config'
       - '${TORRENTS_PATH}/Completed:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9117/UI/Dashboard"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # TAUTULLI
@@ -235,6 +277,12 @@ services:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/tautulli:/config'
       - '${SYNOLOGY_PLEX_PATH}/AppData/Plex Media Server/Logs:/logs:ro'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8181/status || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # ----------------------------------------
   # Seerr
@@ -260,6 +308,12 @@ services:
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/seerr:/app/config'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/settings/public || exit 1
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
 
   # ----------------------------------------
   # Profilarr
@@ -283,6 +337,12 @@ services:
     volumes:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/profilarr:/config'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6868/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # SHELFMARK
@@ -308,6 +368,12 @@ services:
       - '${MEDIA_BASE_PATH}/Books:/books'
       - '${TORRENTS_PATH}/Completed:/downloads'
       - '/etc/localtime:/etc/localtime:ro'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8084/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # ----------------------------------------
   # FLARESOLVERR
@@ -326,4 +392,10 @@ services:
       - '${FLARESOLVERR_PORT}:8191'
     environment:
       - TZ=${TZ}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8191/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
