@@ -338,7 +338,7 @@ services:
       - '${SYNOLOGY_BASE_DOCKER_PATH}/profilarr:/config'
       - '/etc/localtime:/etc/localtime:ro'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6868/"]
+      test: ["CMD-SHELL", "curl -f http://localhost:6868/ || wget -q --spider http://localhost:6868/ || python3 -c \"import urllib.request; urllib.request.urlopen('http://localhost:6868/')\" || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
