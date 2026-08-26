@@ -75,7 +75,7 @@ services:
       - VPN_USER=${VPNUNAME}
       - VPN_PASS=${VPNPASS}
       - VPN_REMOTE=${VPN_REMOTE}
-      - VPN_PORT=1198
+      - VPN_PORT=${VPN_PORT}
       - VPN_PROTOCOL=udp
       - VPN_DEVICE_TYPE=tun
       - VPN_PROV=${VPNPROVIDER}
